@@ -1,0 +1,2397 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Drivers Coaching - #67 Vasili Koltest</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'Inter', sans-serif; background: #f4f4f4; color: #384045; font-size: 14px; }
+
+  /* ── Top Header ── */
+  .top-header {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+    height: 63px; background: white;
+    box-shadow: 0 2px 8px rgba(0,0,0,.1);
+    display: flex; align-items: center;
+    justify-content: space-between;
+    padding: 0 24px 0 16px;
+  }
+  .top-header .logo img { height: 45px; display: block; }
+  .top-header .right-side { display: flex; align-items: center; gap: 24px; }
+  .top-header .icon-row { display: flex; align-items: center; gap: 24px; }
+  .top-header .icon-row img { width: 24px; height: 24px; opacity: .7; }
+  .user-info { display: flex; align-items: center; gap: 4px; }
+  .user-info .user-icon { width: 24px; height: 24px; opacity: .7; }
+  .user-text p:first-child { font-size: 14px; color: #384045; line-height: 17px; }
+  .user-text p:last-child { font-size: 11px; color: #797f82; line-height: 13px; }
+
+  /* ── Left Sidebar ── */
+  .sidebar {
+    position: fixed; top: 63px; left: 0; bottom: 0; z-index: 90;
+    width: 56px; background: #384045;
+    display: flex; flex-direction: column; align-items: center;
+    padding-top: 16px; overflow: hidden;
+  }
+  .sidebar .menu-icons { flex: 1; width: 100%; }
+  .sidebar .menu-item {
+    width: 100%; height: 48px;
+    display: flex; align-items: center; justify-content: center;
+  }
+  .sidebar .menu-item img { width: 24px; height: 24px; opacity: .6; filter: brightness(2); }
+  .sidebar .collapse-btn {
+    width: 100%; height: 56px; background: none; border: none; cursor: pointer;
+    display: flex; align-items: center; justify-content: center;
+  }
+  .sidebar .collapse-btn img { width: 18px; height: 18px; opacity: .6; filter: brightness(2); transform: scaleY(-1); }
+
+  /* ── Main Layout ── */
+  .main-layout {
+    margin-top: 63px;
+    margin-left: 56px;
+    min-height: calc(100vh - 63px);
+  }
+
+  /* ── Page Header ── */
+  .page-header {
+    background: white;
+    padding: 24px;
+    box-shadow: 0 2px 4px rgba(0,0,0,.15);
+    display: flex; flex-direction: column; gap: 32px;
+  }
+  .page-header .breadcrumb { display: flex; align-items: flex-end; gap: 8px; }
+  .breadcrumb .back-icon {
+    width: 32px; height: 32px; display: flex; align-items: center; justify-content: center;
+  }
+  .breadcrumb .back-icon img { width: 20px; height: 20px; opacity: .5; }
+  .breadcrumb h1 {
+    font-size: 30px; font-weight: 400; line-height: 36px;
+    color: #1087d2; white-space: nowrap;
+  }
+  .breadcrumb .sub { font-size: 14px; color: #797f82; line-height: 17px; padding-bottom: 8px; }
+  .page-header .filters { display: flex; gap: 16px; }
+  .dropdown-field {
+    display: flex; flex-direction: column; gap: 4px; width: 224px;
+  }
+  .dropdown-field label { font-size: 12px; color: #797f82; line-height: 14px; }
+  .dropdown-field select {
+    height: 32px; border: 1px solid #e4e5e6; border-radius: 4px;
+    padding: 0 8px; font-family: 'Inter', sans-serif; font-size: 14px;
+    color: #384045; background: white; cursor: pointer; appearance: none;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6'%3E%3Cpath d='M0 0l5 6 5-6z' fill='%23797f82'/%3E%3C/svg%3E");
+    background-repeat: no-repeat; background-position: right 8px center;
+  }
+
+  /* ── Content Area ── */
+  .content { padding: 21px 21px 24px; display: flex; flex-direction: column; gap: 16px; }
+
+  /* ── Summary Cards ── */
+  .summary-cards { display: flex; gap: 16px; }
+  .summary-card {
+    flex: 1; background: white; border: 1px solid #dcdee0; border-radius: 4px;
+    padding: 16px; display: flex; flex-direction: column; gap: 8px;
+  }
+  .summary-card .card-title { font-size: 16px; color: #797f82; font-weight: 400; line-height: 19px; }
+  .summary-card .card-title-row { display: flex; align-items: center; gap: 4px; }
+  .summary-card .card-data { display: flex; align-items: center; gap: 6px; }
+  .summary-card .card-data .fuel-icon { width: 18px; height: 18px; }
+  .summary-card .card-value { font-size: 20px; color: #384045; font-weight: 400; line-height: 24px; }
+  .info-icon {
+    width: 18px; height: 18px; cursor: pointer;
+    display: flex; align-items: center; justify-content: center;
+  }
+  .info-icon svg { width: 15px; height: 15px; }
+
+  /* ── Efficiency Section ── */
+  .efficiency-section {
+    background: white; border-radius: 4px;
+    display: flex; flex-direction: column; gap: 16px; padding: 24px;
+    border: 1px solid #e4e5e6;
+  }
+
+  /* ── Event Trends ── */
+  .event-trends-header {
+    display: flex; align-items: center; justify-content: space-between;
+  }
+  .event-trends-header h2 { font-size: 20px; font-weight: 400; line-height: 24px; color: #384045; }
+  .btn-primary {
+    height: 32px; padding: 0 12px;
+    background: #65b200; color: white; border: none; border-radius: 4px;
+    font-family: 'Inter', sans-serif; font-size: 14px; font-weight: 500;
+    cursor: pointer; display: flex; align-items: center; gap: 6px; white-space: nowrap;
+  }
+  .btn-primary svg { width: 16px; height: 16px; }
+  .btn-secondary {
+    height: 32px; padding: 0 12px;
+    background: white; color: #384045; border: 1px solid #e4e5e6; border-radius: 4px;
+    font-family: 'Inter', sans-serif; font-size: 14px; font-weight: 400;
+    cursor: pointer; white-space: nowrap;
+  }
+  .btn-icon {
+    width: 32px; height: 32px; background: white; border: 1px solid #e4e5e6;
+    border-radius: 4px; cursor: pointer; display: flex; align-items: center; justify-content: center;
+  }
+  .btn-icon-critical {
+    width: 32px; height: 32px; background: white; border: 1px solid #f23e44;
+    border-radius: 4px; cursor: pointer; display: flex; align-items: center; justify-content: center;
+  }
+
+  /* ── Event Trends Component ── */
+  .event-trends-component { display: flex; gap: 16px; height: 485px; }
+
+  /* Metrics List */
+  .metrics-list {
+    width: 386px; flex-shrink: 0; display: flex; gap: 2px;
+  }
+  .metrics-inner {
+    width: 380px; background: #f4f4f4; border: 1px solid #e4e5e6;
+    border-radius: 4px; overflow: hidden; overflow-y: auto;
+  }
+  .metrics-inner::-webkit-scrollbar { width: 4px; }
+  .metrics-inner::-webkit-scrollbar-track { background: transparent; }
+  .metrics-inner::-webkit-scrollbar-thumb { background: #bbbec0; border-radius: 2px; }
+
+  .metric-card {
+    width: 380px; height: 64px; flex-shrink: 0;
+    display: flex; align-items: center; gap: 16px;
+    padding: 16px; border-bottom: 1px solid #e4e5e6;
+    background: rgba(255,255,255,.6); cursor: pointer;
+  }
+  .metric-card.active {
+    background: white; border-left: 4px solid #ffb300;
+    box-shadow: 0 2px 10px rgba(0,0,0,.1);
+  }
+  .metric-card .color-dot { width: 18px; height: 18px; flex-shrink: 0; }
+  .metric-card .color-dot img { width: 18px; height: 18px; }
+  .metric-card .metric-name {
+    flex: 1; font-size: 14px; font-weight: 500; color: #384045;
+    overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+  }
+  .metric-card .metric-name.dimmed { color: #bbbec0; }
+  .metric-card .metric-extra {
+    display: flex; flex-direction: column; align-items: flex-end; gap: 2px;
+    font-size: 12px; color: #797f82; white-space: nowrap;
+  }
+  .metric-card .metric-score {
+    display: flex; align-items: center; gap: 0; width: 58px; flex-shrink: 0;
+    justify-content: space-between; height: 100%;
+  }
+  .metric-divider { width: 1px; height: 100%; background: #e4e5e6; flex-shrink: 0; }
+  .metric-card .score-value {
+    font-size: 16px; font-weight: 400; color: #797f82; flex: 1; text-align: right;
+  }
+  .metric-card .score-value.red { color: #f23e44; font-weight: 500; }
+  .metric-card .score-value.yellow { color: #ffb300; font-weight: 500; }
+  .metric-card .ai-btn {
+    font-size: 12px; color: #384045; border: 1px solid #e4e5e6; border-radius: 4px;
+    padding: 4px 8px; background: white; cursor: pointer; white-space: nowrap;
+    display: flex; align-items: center; gap: 4px;
+  }
+
+  /* Chart area */
+  .chart-area { flex: 1; display: flex; flex-direction: column; gap: 16px; min-width: 0; }
+  .chart-box {
+    flex: 1; background: white; border-radius: 4px;
+    box-shadow: 0 0 10px rgba(0,0,0,.15); position: relative; overflow: hidden;
+  }
+  .chart-inner { position: absolute; inset: 0; }
+
+  .chart-svg-container {
+    position: absolute; inset: 16px 16px 16px 48px;
+  }
+
+  .additional-data {
+    border: 1px solid #e4e5e6; border-radius: 4px; padding: 16px;
+    background: white; flex-shrink: 0;
+    display: flex; align-items: flex-end; justify-content: space-between;
+  }
+  .additional-data .data-title { font-size: 14px; color: #797f82; margin-bottom: 8px; }
+  .additional-data .data-points { display: flex; gap: 48px; }
+  .additional-data .data-point { display: flex; flex-direction: column; gap: 4px; }
+  .additional-data .data-val {
+    font-size: 20px; font-weight: 600; color: #797f82; line-height: 24px; white-space: nowrap;
+  }
+  .additional-data .data-label { font-size: 12px; color: #797f82; white-space: nowrap; }
+  .trend-val { display: flex; align-items: center; gap: 4px; }
+  .trend-val .trend-num { font-size: 20px; font-weight: 600; color: #797f82; }
+  .trend-arrow { color: #f23e44; font-size: 12px; }
+
+  /* ── Coaching History ── */
+  .coaching-history {
+    background: white; border-radius: 4px; padding: 24px;
+    display: flex; flex-direction: column; gap: 24px;
+    border: 1px solid #e4e5e6;
+  }
+  .section-header { display: flex; align-items: center; justify-content: space-between; }
+  .section-header h2 { font-size: 20px; font-weight: 400; color: #384045; }
+
+  /* Coaching table */
+  .coaching-table-wrap {
+    border: 1px solid #e4e5e6; border-radius: 4px; overflow: hidden;
+  }
+  .coaching-table { width: 100%; border-collapse: collapse; }
+  .coaching-table th {
+    background: white; border-bottom: 1px solid #e4e5e6;
+    padding: 8px 16px; text-align: left;
+    font-size: 12px; font-weight: 600; color: #384045; line-height: 14px;
+    white-space: nowrap; height: 48px;
+  }
+  .coaching-table th.sortable { display: flex; align-items: center; gap: 4px; }
+  .coaching-table td {
+    padding: 8px 16px; height: 58px; border-top: 1px solid #e4e5e6;
+    font-size: 12px; color: #384045; vertical-align: middle;
+  }
+  .coaching-table tr:hover td { background: #f9f9f9; cursor: pointer; }
+  .metric-tag {
+    display: inline-flex; align-items: center; gap: 4px;
+    border: 1px solid #e4e5e6; border-radius: 4px; padding: 6px 8px;
+    font-size: 12px; color: #384045; background: white; margin-right: 4px;
+    white-space: nowrap;
+  }
+  .metric-tag img { width: 16px; height: 16px; }
+  .actions-cell { display: flex; align-items: center; gap: 4px; justify-content: flex-end; }
+
+  /* Pagination */
+  .pagination-row {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 0 24px 8px;
+  }
+  .rows-selector { display: flex; align-items: center; gap: 8px; font-size: 14px; color: #384045; }
+  .rows-selector select {
+    height: 32px; width: 70px; border: 1px solid #e4e5e6; border-radius: 4px;
+    padding: 0 8px; font-size: 14px; font-family: 'Inter', sans-serif;
+    background: white; cursor: pointer;
+  }
+  .pagination { display: flex; gap: 4px; align-items: center; }
+  .page-btn {
+    width: 24px; height: 24px; border-radius: 3px; border: none;
+    font-size: 14px; font-family: 'Inter', sans-serif; cursor: pointer;
+    display: flex; align-items: center; justify-content: center;
+    background: white; color: #797f82;
+  }
+  .page-btn.active { background: #65b200; color: white; }
+  .page-btn.arrow { color: #384045; }
+
+  /* Sort icon */
+  .sort-icon { width: 8px; height: 14px; margin-right: 4px; }
+
+  /* Scrollbar styles for metrics */
+  .scroll-track {
+    width: 4px; background: #e4e5e6; border-radius: 2px;
+    flex-shrink: 0; position: relative; overflow: hidden;
+  }
+  .scroll-thumb {
+    width: 4px; height: 40%; background: #bbbec0; border-radius: 2px;
+    position: absolute; top: 0;
+  }
+
+  /* Topic column width */
+  .col-topic { width: 38%; }
+  .col-type { width: 17%; }
+  .col-date { width: 13%; }
+  .col-status { width: 22%; }
+  .col-more { width: 10%; text-align: right; }
+
+  /* Status badges */
+  .status-badge {
+    display: inline-flex; align-items: center; gap: 5px;
+    font-size: 12px; font-weight: 600; padding: 3px 10px; border-radius: 10px;
+    white-space: nowrap;
+  }
+  .status-badge.completed { background: #eaf5e0; color: #3a7800; border: 1px solid #b8e08a; }
+  .status-select {
+    appearance: none; border: 1px solid #ffe080; border-radius: 6px;
+    padding: 4px 28px 4px 10px; font-family: 'Inter', sans-serif; font-size: 12px;
+    color: #c88000; background: #fff8e6; cursor: pointer; font-weight: 600;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6'%3E%3Cpath d='M0 0l5 6 5-6z' fill='%23c88000'/%3E%3C/svg%3E");
+    background-repeat: no-repeat; background-position: right 8px center;
+  }
+  .status-select:focus { outline: none; border-color: #65b200; }
+  .intervention-select {
+    appearance: none; border: 1px solid #e4e5e6; border-radius: 6px;
+    padding: 4px 28px 4px 10px; font-family: 'Inter', sans-serif; font-size: 12px;
+    color: #384045; background: white; cursor: pointer; font-weight: 500;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6'%3E%3Cpath d='M0 0l5 6 5-6z' fill='%23797f82'/%3E%3C/svg%3E");
+    background-repeat: no-repeat; background-position: right 8px center;
+  }
+  .intervention-select:focus { outline: none; border-color: #65b200; }
+  .coaching-row-new td { background: #fffef5; }
+
+  /* Header cell with sort indicator */
+  .th-content { display: flex; align-items: center; gap: 4px; }
+
+  /* ── Snackbar ── */
+  .snackbar {
+    position: fixed; bottom: 28px; left: 28px; z-index: 300;
+    background: #2a2f33; color: white; border-radius: 10px;
+    padding: 14px 18px; max-width: 400px;
+    box-shadow: 0 4px 20px rgba(0,0,0,.28);
+    display: flex; align-items: flex-start; gap: 12px;
+    transform: translateY(20px); opacity: 0;
+    transition: transform .22s ease, opacity .22s ease;
+    pointer-events: none;
+  }
+  .snackbar.visible { transform: translateY(0); opacity: 1; pointer-events: auto; }
+  .snackbar-icon { font-size: 18px; flex-shrink: 0; margin-top: 1px; }
+  .snackbar-body { flex: 1; }
+  .snackbar-msg  { font-size: 13px; line-height: 1.5; color: rgba(255,255,255,.9); }
+  .snackbar-link {
+    display: inline-block; margin-top: 6px;
+    font-size: 12px; font-weight: 600; color: #7dd84a;
+    cursor: pointer; text-decoration: none; border-bottom: 1px solid rgba(125,216,74,.4);
+  }
+  .snackbar-link:hover { color: #9ae86a; border-bottom-color: rgba(154,232,106,.6); }
+  .snackbar-close {
+    background: none; border: none; cursor: pointer;
+    color: rgba(255,255,255,.5); font-size: 18px; line-height: 1;
+    padding: 0; flex-shrink: 0; margin-top: -1px; font-family: 'Inter', sans-serif;
+  }
+  .snackbar-close:hover { color: white; }
+
+  /* ── Chart Event Panel ── */
+  .chart-event-panel {
+    display: none; position: fixed; top: 63px; left: 56px; right: 0; bottom: 0;
+    z-index: 150; overflow-y: auto; background: #f4f4f4;
+  }
+  .detail-header-bar {
+    position: sticky; top: 0; z-index: 5; background: white;
+    box-shadow: 0 1px 0 #e4e5e6; padding: 14px 28px;
+    display: flex; align-items: center; gap: 10px;
+  }
+  .detail-back-btn {
+    display: flex; align-items: center; gap: 6px;
+    padding: 6px 12px; background: white; border: 1px solid #e4e5e6;
+    border-radius: 6px; cursor: pointer; font-size: 13px; font-weight: 500;
+    font-family: 'Inter', sans-serif; color: #384045; white-space: nowrap; flex-shrink: 0;
+  }
+  .detail-back-btn:hover { background: #f8f8f8; }
+  .detail-type-name { font-size: 18px; font-weight: 700; color: #384045; }
+  .detail-status-label {
+    margin-left: auto; font-size: 13px; color: #797f82;
+    border: 1px solid #e4e5e6; border-radius: 6px; padding: 4px 12px; white-space: nowrap;
+  }
+  .detail-body { padding: 24px 28px; display: flex; gap: 20px; align-items: flex-start; }
+  .detail-left { flex: 1; display: flex; flex-direction: column; gap: 16px; min-width: 0; }
+  .detail-right { width: 340px; flex-shrink: 0; display: flex; flex-direction: column; gap: 16px; }
+  .detail-card {
+    background: white; border-radius: 10px; border: 1px solid #e4e5e6;
+    padding: 20px; overflow: hidden;
+  }
+  .detail-card-title { font-size: 16px; font-weight: 700; color: #384045; margin-bottom: 16px; }
+  .detail-no-video-area {
+    background: #f4f5f6; border-radius: 8px; aspect-ratio: 16/9;
+    display: flex; flex-direction: column; align-items: center;
+    justify-content: center; gap: 10px; color: #bbbec0;
+  }
+  .detail-no-video-area span { font-size: 13px; }
+  .detail-mini-map {
+    border: 1px solid #e4e5e6; border-radius: 8px; overflow: hidden;
+    height: 200px; position: relative;
+  }
+  .detail-map-badge {
+    position: absolute; background: white; border-radius: 6px;
+    padding: 4px 10px; font-size: 12px; font-weight: 500; color: #384045;
+    box-shadow: 0 1px 4px rgba(0,0,0,.1); display: flex; align-items: center; gap: 5px;
+  }
+  .detail-map-dot {
+    position: absolute; top: 50%; left: 50%; transform: translate(-50%,-50%);
+    width: 14px; height: 14px; border-radius: 50%;
+    background: #65b200; border: 3px solid white; box-shadow: 0 0 0 2px rgba(101,178,0,.4);
+  }
+  .detail-context-row { display: grid; grid-template-columns: repeat(4,1fr); gap: 12px; }
+  .detail-ctx-card {
+    background: white; border-radius: 10px; border: 1px solid #e4e5e6; padding: 14px 16px;
+  }
+  .detail-ctx-label {
+    font-size: 10px; font-weight: 600; letter-spacing: .06em; color: #797f82;
+    text-transform: uppercase; margin-bottom: 8px; display: flex; align-items: center; gap: 5px;
+  }
+  .detail-ctx-value { font-size: 20px; font-weight: 700; }
+  .detail-action-btn {
+    width: 100%; padding: 11px; border-radius: 8px; font-size: 14px; font-weight: 600;
+    cursor: pointer; font-family: 'Inter', sans-serif; border: none;
+    display: flex; align-items: center; justify-content: center; gap: 8px; margin-bottom: 8px;
+  }
+  .detail-action-btn:last-child { margin-bottom: 0; }
+  .detail-action-btn.primary { background: #1087d2; color: white; }
+  .detail-action-btn.primary:hover { background: #0d70b5; }
+  .detail-action-btn.secondary { background: white; border: 1.5px solid #e4e5e6; color: #384045; }
+  .detail-action-btn.secondary:hover { background: #f8f8f8; }
+  .detail-field-row {
+    display: flex; justify-content: space-between; align-items: center;
+    padding: 9px 0; border-bottom: 1px solid #f0f0f0;
+  }
+  .detail-field-row:last-child { border-bottom: none; }
+  .detail-field-label { font-size: 13px; color: #797f82; }
+  .detail-field-val { font-size: 13px; font-weight: 600; color: #384045; text-align: right; }
+  .detail-field-val.green { color: #65b200; }
+  .detail-driver-card {
+    background: white; border-radius: 10px; border: 1px solid #e4e5e6;
+    padding: 18px 20px; display: flex; align-items: center; gap: 14px;
+  }
+  .driver-av {
+    width: 44px; height: 44px; border-radius: 50%; background: #d8dfe3;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 15px; font-weight: 700; color: #384045; flex-shrink: 0;
+  }
+  .detail-dname { font-size: 15px; font-weight: 700; color: #384045; }
+  .detail-devts { font-size: 12px; color: #797f82; margin-top: 2px; }
+  .detail-dscore {
+    width: 36px; height: 36px; border-radius: 50%; border: 2px solid currentColor;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 13px; font-weight: 700; flex-shrink: 0;
+  }
+  .detail-vehicle-card {
+    background: white; border-radius: 10px; border: 1px solid #e4e5e6; padding: 18px 20px;
+  }
+  .detail-vh-header { display: flex; align-items: center; gap: 10px; margin-bottom: 14px; }
+  .detail-vh-name { font-size: 15px; font-weight: 700; color: #65b200; }
+  .detail-health-row {
+    display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;
+  }
+  .detail-health-lbl { font-size: 13px; color: #797f82; }
+  .detail-health-pct { font-size: 14px; font-weight: 700; }
+  .detail-health-bar { height: 6px; background: #f0f0f0; border-radius: 3px; }
+  .detail-health-fill { height: 100%; border-radius: 3px; }
+  .detail-report-meta { display: flex; align-items: center; gap: 10px; margin-bottom: 14px; }
+  .detail-report-av {
+    width: 34px; height: 34px; border-radius: 50%; background: #d8dfe3;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 12px; font-weight: 700; color: #384045; flex-shrink: 0;
+  }
+  .detail-report-by { font-size: 13px; font-weight: 600; color: #384045; }
+  .detail-report-date { font-size: 12px; color: #797f82; margin-top: 1px; }
+  .detail-report-submitted {
+    margin-left: auto; font-size: 11px; font-weight: 600; padding: 3px 9px;
+    border-radius: 10px; background: #eaf5e0; color: #3a7800; border: 1px solid #b8e08a; white-space: nowrap;
+  }
+  .detail-report-text {
+    background: #f8f9fa; border-left: 3px solid #e4e5e6; border-radius: 0 6px 6px 0;
+    padding: 12px 14px; font-size: 13px; color: #384045; line-height: 1.65; font-style: italic;
+  }
+  .detail-report-empty {
+    display: flex; flex-direction: column; align-items: center; gap: 10px;
+    padding: 20px 0 6px; text-align: center;
+  }
+  .detail-report-empty p { font-size: 13px; color: #9fa3a6; }
+  .pill {
+    font-size: 11px; font-weight: 600; border-radius: 10px; padding: 2px 8px;
+    white-space: nowrap; display: inline-flex; align-items: center; gap: 4px;
+  }
+  .chart-dot { cursor: pointer; transition: opacity .12s; }
+  .chart-dot:hover { opacity: .75; }
+  .detail-stats-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+  .detail-stat-box { background: #f7f8f9; border-radius: 8px; padding: 12px 14px; }
+  .detail-stat-label { font-size: 11px; font-weight: 600; color: #797f82; text-transform: uppercase; letter-spacing: .04em; margin-bottom: 6px; }
+  .detail-stat-val { font-size: 20px; font-weight: 700; color: #384045; }
+  .detail-stat-sub { font-size: 11px; color: #9fa3a6; margin-top: 3px; }
+  .detail-occurrence-list { display: flex; flex-direction: column; }
+  .detail-occurrence-row {
+    display: flex; align-items: center; gap: 10px;
+    padding: 10px 0; border-bottom: 1px solid #f0f0f0;
+  }
+  .detail-occurrence-row:last-child { border-bottom: none; }
+  .detail-occ-index {
+    width: 20px; height: 20px; border-radius: 50%; background: #f0f0f0;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 11px; font-weight: 700; color: #797f82; flex-shrink: 0;
+  }
+  .detail-occ-time { font-size: 13px; font-weight: 600; color: #384045; width: 44px; flex-shrink: 0; }
+  .detail-occ-dur { font-size: 12px; color: #797f82; width: 48px; flex-shrink: 0; }
+  .detail-occ-loc { font-size: 12px; color: #797f82; flex: 1; }
+  .detail-occ-media { font-size: 11px; font-weight: 600; color: #1087d2; white-space: nowrap; }
+</style>
+</head>
+<body>
+
+<!-- ═══════════════════════════════════════ TOP HEADER ═══════════════════════════════════════ -->
+<header class="top-header">
+  <div class="logo">
+    <svg width="84" height="26" viewBox="0 0 84 26"><text x="0" y="20" font-family="Inter,sans-serif" font-size="20" font-weight="700" letter-spacing="-0.5" fill="white">mapon</text></svg>
+  </div>
+  <div class="right-side">
+    <div class="icon-row">
+      <!-- invoice icon -->
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" opacity=".65"><rect x="4" y="2" width="12" height="18" rx="1" stroke="#384045" stroke-width="1.5"/><path d="M8 7h6M8 10h6M8 13h4" stroke="#384045" stroke-width="1.5" stroke-linecap="round"/></svg>
+      <!-- people icon -->
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" opacity=".65"><circle cx="9" cy="7" r="3" stroke="#384045" stroke-width="1.5"/><circle cx="17" cy="8" r="2" stroke="#384045" stroke-width="1.5"/><path d="M2 19c0-3.314 3.134-6 7-6s7 2.686 7 6" stroke="#384045" stroke-width="1.5"/><path d="M17 12c2.21 0 4 1.567 4 3.5" stroke="#384045" stroke-width="1.5" stroke-linecap="round"/></svg>
+      <!-- question icon -->
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" opacity=".65"><circle cx="12" cy="12" r="9" stroke="#384045" stroke-width="1.5"/><path d="M12 17v-1" stroke="#384045" stroke-width="2" stroke-linecap="round"/><path d="M9.5 9.5C9.5 8.12 10.62 7 12 7s2.5 1.12 2.5 2.5c0 1.5-2.5 2-2.5 3" stroke="#384045" stroke-width="1.5" stroke-linecap="round"/></svg>
+      <!-- bell icon -->
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" opacity=".65"><path d="M12 2a7 7 0 017 7v4l2 3H3l2-3V9a7 7 0 017-7z" stroke="#384045" stroke-width="1.5"/><path d="M10 19a2 2 0 004 0" stroke="#384045" stroke-width="1.5"/></svg>
+    </div>
+    <div class="user-info">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" opacity=".65"><circle cx="12" cy="8" r="4" stroke="#384045" stroke-width="1.5"/><path d="M4 19c0-3.314 3.582-6 8-6s8 2.686 8 6" stroke="#384045" stroke-width="1.5" stroke-linecap="round"/></svg>
+      <div class="user-text">
+        <p>John Snow</p>
+        <p>Mapon Company</p>
+      </div>
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" opacity=".65"><path d="M7 10l5 5 5-5" stroke="#384045" stroke-width="1.5" stroke-linecap="round"/></svg>
+    </div>
+    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" opacity=".65"><circle cx="5" cy="12" r="1.5" fill="#384045"/><circle cx="12" cy="12" r="1.5" fill="#384045"/><circle cx="19" cy="12" r="1.5" fill="#384045"/></svg>
+  </div>
+</header>
+
+<!-- ═══════════════════════════════════════ LEFT SIDEBAR ═══════════════════════════════════════ -->
+<nav class="sidebar">
+  <div class="menu-icons">
+    <!-- Map -->
+    <div class="menu-item"><svg width="22" height="22" viewBox="0 0 22 22" fill="none"><path d="M3 6l5-2 6 2 5-2v12l-5 2-6-2-5 2V6z" stroke="rgba(255,255,255,.55)" stroke-width="1.4" stroke-linejoin="round"/><path d="M8 4v12M14 6v12" stroke="rgba(255,255,255,.35)" stroke-width="1.2"/></svg></div>
+    <!-- Dashboard -->
+    <div class="menu-item"><svg width="22" height="22" viewBox="0 0 22 22" fill="none"><rect x="3" y="3" width="7" height="7" rx="1" stroke="rgba(255,255,255,.55)" stroke-width="1.4"/><rect x="12" y="3" width="7" height="7" rx="1" stroke="rgba(255,255,255,.55)" stroke-width="1.4"/><rect x="3" y="12" width="7" height="7" rx="1" stroke="rgba(255,255,255,.55)" stroke-width="1.4"/><rect x="12" y="12" width="7" height="7" rx="1" stroke="rgba(255,255,255,.55)" stroke-width="1.4"/></svg></div>
+    <!-- Location -->
+    <div class="menu-item"><svg width="22" height="22" viewBox="0 0 22 22" fill="none"><path d="M11 2a6 6 0 016 6c0 4-6 12-6 12S5 12 5 8a6 6 0 016-6z" stroke="rgba(255,255,255,.55)" stroke-width="1.4"/><circle cx="11" cy="8" r="2" stroke="rgba(255,255,255,.55)" stroke-width="1.3"/></svg></div>
+    <!-- Reports -->
+    <div class="menu-item"><svg width="22" height="22" viewBox="0 0 22 22" fill="none"><rect x="2" y="2" width="18" height="18" rx="2" stroke="rgba(255,255,255,.55)" stroke-width="1.4"/><path d="M6 15l3-4 3 2 4-5" stroke="rgba(255,255,255,.55)" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+    <!-- Alerts -->
+    <div class="menu-item"><svg width="22" height="22" viewBox="0 0 22 22" fill="none"><path d="M11 2a6 6 0 016 6v4l2 3H3l2-3V8a6 6 0 016-6z" stroke="rgba(255,255,255,.55)" stroke-width="1.4"/><path d="M9 18a2 2 0 004 0" stroke="rgba(255,255,255,.55)" stroke-width="1.3"/></svg></div>
+    <!-- Fuel -->
+    <div class="menu-item"><svg width="22" height="22" viewBox="0 0 22 22" fill="none"><rect x="3" y="4" width="10" height="15" rx="1.5" stroke="rgba(255,255,255,.55)" stroke-width="1.4"/><path d="M13 8l4-1v4a2 2 0 01-2 2h-2" stroke="rgba(255,255,255,.55)" stroke-width="1.4" stroke-linecap="round"/><path d="M6 8h4" stroke="rgba(255,255,255,.55)" stroke-width="1.4" stroke-linecap="round"/></svg></div>
+    <!-- Chat -->
+    <div class="menu-item"><svg width="22" height="22" viewBox="0 0 22 22" fill="none"><path d="M3 4h16a1 1 0 011 1v9a1 1 0 01-1 1H7l-5 4V5a1 1 0 011-1z" stroke="rgba(255,255,255,.55)" stroke-width="1.4" stroke-linejoin="round"/></svg></div>
+    <!-- Car -->
+    <div class="menu-item"><svg width="22" height="22" viewBox="0 0 22 22" fill="none"><rect x="2" y="9" width="18" height="8" rx="2" stroke="rgba(255,255,255,.55)" stroke-width="1.4"/><path d="M5 9l2-4h8l2 4" stroke="rgba(255,255,255,.55)" stroke-width="1.4" stroke-linejoin="round"/><circle cx="6" cy="17" r="1.5" stroke="rgba(255,255,255,.55)" stroke-width="1.2"/><circle cx="16" cy="17" r="1.5" stroke="rgba(255,255,255,.55)" stroke-width="1.2"/></svg></div>
+    <!-- Grid -->
+    <div class="menu-item"><svg width="22" height="22" viewBox="0 0 22 22" fill="none"><rect x="3" y="3" width="6" height="6" rx="1" stroke="rgba(255,255,255,.55)" stroke-width="1.4"/><rect x="13" y="3" width="6" height="6" rx="1" stroke="rgba(255,255,255,.55)" stroke-width="1.4"/><rect x="3" y="13" width="6" height="6" rx="1" stroke="rgba(255,255,255,.55)" stroke-width="1.4"/><rect x="13" y="13" width="6" height="6" rx="1" stroke="rgba(255,255,255,.55)" stroke-width="1.4"/></svg></div>
+    <!-- Person (separator) -->
+    <div class="menu-item"><svg width="22" height="22" viewBox="0 0 22 22" fill="none"><circle cx="11" cy="7" r="4" stroke="rgba(255,255,255,.55)" stroke-width="1.4"/><path d="M3 19c0-4.418 3.582-8 8-8s8 3.582 8 8" stroke="rgba(255,255,255,.55)" stroke-width="1.4" stroke-linecap="round"/></svg></div>
+    <!-- Coaching (active) -->
+    <div class="menu-item" style="background:rgba(255,255,255,.1);"><svg width="22" height="22" viewBox="0 0 22 22" fill="none"><path d="M11 2l9 4-9 4-9-4 9-4z" stroke="rgba(255,255,255,.9)" stroke-width="1.4" stroke-linejoin="round"/><path d="M5 9.5v5c0 2.485 2.686 4.5 6 4.5s6-2.015 6-4.5v-5" stroke="rgba(255,255,255,.9)" stroke-width="1.4" stroke-linecap="round"/></svg></div>
+    <!-- Video -->
+    <div class="menu-item"><svg width="22" height="22" viewBox="0 0 22 22" fill="none"><rect x="2" y="6" width="13" height="10" rx="2" stroke="rgba(255,255,255,.55)" stroke-width="1.4"/><path d="M15 10l5-3v8l-5-3v-2z" stroke="rgba(255,255,255,.55)" stroke-width="1.4" stroke-linejoin="round"/></svg></div>
+    <!-- Report2 -->
+    <div class="menu-item"><svg width="22" height="22" viewBox="0 0 22 22" fill="none"><rect x="4" y="2" width="14" height="18" rx="1.5" stroke="rgba(255,255,255,.55)" stroke-width="1.4"/><path d="M8 7h6M8 10.5h6M8 14h4" stroke="rgba(255,255,255,.55)" stroke-width="1.4" stroke-linecap="round"/></svg></div>
+    <!-- Map2 -->
+    <div class="menu-item"><svg width="22" height="22" viewBox="0 0 22 22" fill="none"><circle cx="11" cy="11" r="8" stroke="rgba(255,255,255,.55)" stroke-width="1.4"/><path d="M11 3c-2 2.5-3 5-3 8s1 5.5 3 8M11 3c2 2.5 3 5 3 8s-1 5.5-3 8" stroke="rgba(255,255,255,.4)" stroke-width="1.3"/><path d="M3 11h16" stroke="rgba(255,255,255,.4)" stroke-width="1.3"/></svg></div>
+    <!-- Shop -->
+    <div class="menu-item"><svg width="22" height="22" viewBox="0 0 22 22" fill="none"><path d="M4 6h14l-1.5 11H5.5L4 6z" stroke="rgba(255,255,255,.55)" stroke-width="1.4" stroke-linejoin="round"/><path d="M8 6a3 3 0 116 0" stroke="rgba(255,255,255,.55)" stroke-width="1.4"/></svg></div>
+    <!-- Person2 -->
+    <div class="menu-item"><svg width="22" height="22" viewBox="0 0 22 22" fill="none"><circle cx="8" cy="7" r="3.5" stroke="rgba(255,255,255,.55)" stroke-width="1.4"/><path d="M2 19c0-3.866 2.686-7 6-7s6 3.134 6 7" stroke="rgba(255,255,255,.55)" stroke-width="1.4" stroke-linecap="round"/><path d="M15 6a3 3 0 010 6" stroke="rgba(255,255,255,.35)" stroke-width="1.3" stroke-linecap="round"/><path d="M19 19c0-3.866-1.343-7-3-7" stroke="rgba(255,255,255,.35)" stroke-width="1.3" stroke-linecap="round"/></svg></div>
+    <!-- Settings -->
+    <div class="menu-item"><svg width="22" height="22" viewBox="0 0 22 22" fill="none"><circle cx="11" cy="11" r="3" stroke="rgba(255,255,255,.55)" stroke-width="1.4"/><path d="M11 2v2M11 18v2M2 11h2M18 11h2M4.93 4.93l1.41 1.41M15.66 15.66l1.41 1.41M4.93 17.07l1.41-1.41M15.66 6.34l1.41-1.41" stroke="rgba(255,255,255,.55)" stroke-width="1.4" stroke-linecap="round"/></svg></div>
+    <!-- Print -->
+    <div class="menu-item"><svg width="22" height="22" viewBox="0 0 22 22" fill="none"><rect x="5" y="2" width="12" height="6" rx="1" stroke="rgba(255,255,255,.55)" stroke-width="1.4"/><rect x="5" y="12" width="12" height="8" rx="1" stroke="rgba(255,255,255,.55)" stroke-width="1.4"/><path d="M5 10H3a1 1 0 00-1 1v5a1 1 0 001 1h2M17 10h2a1 1 0 011 1v5a1 1 0 01-1 1h-2" stroke="rgba(255,255,255,.55)" stroke-width="1.4"/><circle cx="16" cy="12.5" r=".8" fill="rgba(255,255,255,.55)"/></svg></div>
+    <!-- Code -->
+    <div class="menu-item">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none"><rect x="3" y="3" width="8" height="8" rx="1" stroke="rgba(255,255,255,.5)" stroke-width="1.5"/><rect x="3" y="13" width="8" height="8" rx="1" stroke="rgba(255,255,255,.5)" stroke-width="1.5"/><rect x="13" y="3" width="8" height="8" rx="1" stroke="rgba(255,255,255,.5)" stroke-width="1.5"/><path d="M13 17h8M17 13v8" stroke="rgba(255,255,255,.5)" stroke-width="1.5" stroke-linecap="round"/></svg>
+    </div>
+    <!-- Puzzle -->
+    <div class="menu-item">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M9 3v3H6v4h3c0 1.105.895 2 2 2s2-.895 2-2h3V6h-3V3H9zM6 13v4h3c0 1.105.895 2 2 2s2-.895 2-2h3v-4h-3c0-1.105-.895-2-2-2s-2 .895-2 2H6z" stroke="rgba(255,255,255,.5)" stroke-width="1.5"/></svg>
+    </div>
+  </div>
+  <button class="collapse-btn">
+    <svg width="18" height="18" viewBox="0 0 18 18" fill="none"><path d="M11 5l-4 4 4 4" stroke="rgba(255,255,255,.6)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><path d="M7 5l-4 4 4 4" stroke="rgba(255,255,255,.6)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+  </button>
+</nav>
+
+<!-- ═══════════════════════════════════════ MAIN CONTENT ═══════════════════════════════════════ -->
+<div class="main-layout">
+
+  <!-- Page Header -->
+  <div class="page-header">
+    <div class="breadcrumb">
+      <a class="back-icon" href="index.html" title="Back to Event Management" aria-label="Back to Event Management" style="text-decoration:none; cursor:pointer;">
+        <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M12 5l-5 5 5 5" stroke="#1087d2" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </a>
+      <h1>#67 Vasili Koltest</h1>
+      <span class="sub">out of 100 drivers</span>
+    </div>
+    <div class="filters">
+      <div class="dropdown-field">
+        <label>Vehicle</label>
+        <select>
+          <option>All</option>
+        </select>
+      </div>
+      <div class="dropdown-field">
+        <label>Period</label>
+        <select>
+          <option>This month</option>
+        </select>
+      </div>
+    </div>
+  </div>
+
+  <!-- Content -->
+  <div class="content">
+
+    <!-- ── Summary Cards ── -->
+    <div class="summary-cards">
+      <div class="summary-card">
+        <div class="card-title">Distance Driven</div>
+        <div class="card-data">
+          <svg class="fuel-icon" width="18" height="18" viewBox="0 0 18 18" fill="none"><rect x="2" y="3" width="8" height="12" rx="1.5" stroke="#1087d2" stroke-width="1.3"/><path d="M10 6.5l3-.5v3a1.5 1.5 0 01-1.5 1.5H10" stroke="#1087d2" stroke-width="1.3" stroke-linecap="round"/><path d="M5 6.5h3" stroke="#1087d2" stroke-width="1.3" stroke-linecap="round"/></svg>
+          <span class="card-value">5 157.6 km</span>
+        </div>
+      </div>
+      <div class="summary-card">
+        <div class="card-title">Avg. Fuel &amp; Energy Consumed</div>
+        <div class="card-data">
+          <svg class="fuel-icon" width="18" height="18" viewBox="0 0 18 18" fill="none"><rect x="2" y="3" width="8" height="12" rx="1.5" stroke="#1087d2" stroke-width="1.3"/><path d="M10 6.5l3-.5v3a1.5 1.5 0 01-1.5 1.5H10" stroke="#1087d2" stroke-width="1.3" stroke-linecap="round"/><path d="M5 6.5h3" stroke="#1087d2" stroke-width="1.3" stroke-linecap="round"/></svg>
+          <span class="card-value">30.51 L/100km</span>
+        </div>
+      </div>
+      <div class="summary-card">
+        <div class="card-title">Total Fuel &amp; Energy Consumed</div>
+        <div class="card-data">
+          <svg class="fuel-icon" width="18" height="18" viewBox="0 0 18 18" fill="none"><rect x="2" y="3" width="8" height="12" rx="1.5" stroke="#1087d2" stroke-width="1.3"/><path d="M10 6.5l3-.5v3a1.5 1.5 0 01-1.5 1.5H10" stroke="#1087d2" stroke-width="1.3" stroke-linecap="round"/><path d="M5 6.5h3" stroke="#1087d2" stroke-width="1.3" stroke-linecap="round"/></svg>
+          <span class="card-value">1 581.2 L</span>
+        </div>
+      </div>
+      <div class="summary-card">
+        <div class="card-title-row">
+          <span class="card-title">Potential Savings</span>
+          <div class="info-icon">
+            <svg viewBox="0 0 15 15" fill="none"><circle cx="7.5" cy="7.5" r="6.5" stroke="#797f82" stroke-width="1.2"/><path d="M7.5 10.5V7" stroke="#797f82" stroke-width="1.2" stroke-linecap="round"/><circle cx="7.5" cy="5" r=".75" fill="#797f82"/></svg>
+          </div>
+        </div>
+        <div class="card-data">
+          <span class="card-value">181 L</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── Efficiency + Event Trends ── -->
+    <div class="efficiency-section">
+      <!-- Event Trends Header -->
+      <div class="event-trends-header">
+        <h2>Event Trends</h2>
+        <button class="btn-primary">
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M2 8h12M8 2l5 6-5 6" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          Draft Message to Driver
+        </button>
+      </div>
+
+      <!-- Event Trends Component -->
+      <div class="event-trends-component">
+
+        <!-- Left: Metrics List -->
+        <div class="metrics-list">
+          <div class="metrics-inner">
+
+            <!-- Overall Score -->
+            <div class="metric-card" style="background:rgba(255,255,255,.6);">
+              <div class="color-dot"><svg width="18" height="18" viewBox="0 0 18 18"><circle cx="9" cy="9" r="6" fill="#384045" opacity=".8"/></svg></div>
+              <span class="metric-name">Overall Score</span>
+              <button class="ai-btn">
+                <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M6 1l1.5 3.5L11 6 7.5 7.5 6 11 4.5 7.5 1 6l3.5-1.5L6 1z" stroke="#384045" stroke-width="1" fill="none"/></svg>
+                AI Analysis
+              </button>
+              <div class="metric-score">
+                <div class="metric-divider"></div>
+                <span class="score-value">65%</span>
+              </div>
+            </div>
+
+            <!-- Eco Speed -->
+            <div class="metric-card">
+              <div class="color-dot"><svg width="18" height="18" viewBox="0 0 18 18"><circle cx="9" cy="9" r="6" fill="#65b200"/></svg></div>
+              <span class="metric-name">Eco Speed</span>
+              <div class="metric-extra"><span>85%</span><span>of driving time</span></div>
+              <div class="metric-score">
+                <div class="metric-divider"></div>
+                <span class="score-value red">48%</span>
+              </div>
+            </div>
+
+            <!-- Excessive Idling (active) -->
+            <div class="metric-card active">
+              <div class="color-dot">
+                <svg width="18" height="18" viewBox="0 0 18 18"><circle cx="9" cy="9" r="6" fill="#0d9488"/></svg>
+              </div>
+              <span class="metric-name">Excessive Idling</span>
+              <div class="metric-extra"><span>6%</span><span>of driving time</span></div>
+              <div class="metric-score">
+                <div class="metric-divider"></div>
+                <span class="score-value yellow">73%</span>
+              </div>
+            </div>
+
+            <!-- Cruise Control -->
+            <div class="metric-card">
+              <div class="color-dot"><svg width="18" height="18" viewBox="0 0 18 18"><circle cx="9" cy="9" r="6" fill="#1087d2"/></svg></div>
+              <span class="metric-name">Cruise Control</span>
+              <div class="metric-extra"><span>71%</span><span>of driving time</span></div>
+              <div class="metric-score">
+                <div class="metric-divider"></div>
+                <span class="score-value yellow">61%</span>
+              </div>
+            </div>
+
+            <!-- Coasting -->
+            <div class="metric-card">
+              <div class="color-dot"><svg width="18" height="18" viewBox="0 0 18 18"><circle cx="9" cy="9" r="6" fill="#3b82f6"/></svg></div>
+              <span class="metric-name">Coasting</span>
+              <div class="metric-extra"><span>6%</span><span>of driving time</span></div>
+              <div class="metric-score">
+                <div class="metric-divider"></div>
+                <span class="score-value red">47%</span>
+              </div>
+            </div>
+
+            <!-- Harsh Breaking -->
+            <div class="metric-card">
+              <div class="color-dot"><svg width="18" height="18" viewBox="0 0 18 18"><circle cx="9" cy="9" r="6" fill="#e8a000"/></svg></div>
+              <span class="metric-name">Harsh Breaking</span>
+              <div class="metric-extra"><span>8x</span></div>
+              <div class="metric-score">
+                <div class="metric-divider"></div>
+                <span class="score-value">99%</span>
+              </div>
+            </div>
+
+            <!-- Harsh Acceleration -->
+            <div class="metric-card">
+              <div class="color-dot"><svg width="18" height="18" viewBox="0 0 18 18"><circle cx="9" cy="9" r="6" fill="#f97316"/></svg></div>
+              <span class="metric-name">Harsh Acceleration</span>
+              <div class="metric-extra"><span>48x</span></div>
+              <div class="metric-score">
+                <div class="metric-divider"></div>
+                <span class="score-value yellow">69%</span>
+              </div>
+            </div>
+
+            <!-- Harsh cornering -->
+            <div class="metric-card">
+              <div class="color-dot"><svg width="18" height="18" viewBox="0 0 18 18"><circle cx="9" cy="9" r="6" fill="#8b5cf6"/></svg></div>
+              <span class="metric-name">Harsh cornering</span>
+              <div class="metric-extra"><span>4x</span></div>
+              <div class="metric-score">
+                <div class="metric-divider"></div>
+                <span class="score-value">96%</span>
+              </div>
+            </div>
+
+            <!-- Green RPM -->
+            <div class="metric-card">
+              <div class="color-dot"><svg width="18" height="18" viewBox="0 0 18 18"><circle cx="9" cy="9" r="6" fill="#22c55e"/></svg></div>
+              <span class="metric-name">Green RPM</span>
+              <div class="metric-extra"><span>99%</span><span>of driving time</span></div>
+              <div class="metric-score">
+                <div class="metric-divider"></div>
+                <span class="score-value">99%</span>
+              </div>
+            </div>
+
+            <!-- Speeding (disabled) -->
+            <div class="metric-card">
+              <div class="color-dot"><svg width="18" height="18" viewBox="0 0 18 18"><circle cx="9" cy="9" r="6" fill="#bbbec0"/></svg></div>
+              <span class="metric-name dimmed">Speeding</span>
+              <div class="metric-extra"><span>-</span></div>
+              <div class="metric-score">
+                <div class="metric-divider"></div>
+                <span class="score-value" style="text-align:center;width:41px;">-</span>
+              </div>
+            </div>
+
+            <!-- Overspeed -->
+            <div class="metric-card">
+              <div class="color-dot"><svg width="18" height="18" viewBox="0 0 18 18"><circle cx="9" cy="9" r="6" fill="#f23e44"/></svg></div>
+              <span class="metric-name">Overspeed</span>
+              <div class="metric-extra"><span>5</span><span>events</span></div>
+              <div class="metric-score">
+                <div class="metric-divider"></div>
+                <span class="score-value">89%</span>
+              </div>
+            </div>
+
+            <!-- Over revving engine -->
+            <div class="metric-card" style="border-bottom:none;">
+              <div class="color-dot"><svg width="18" height="18" viewBox="0 0 18 18"><circle cx="9" cy="9" r="6" fill="#797f82"/></svg></div>
+              <span class="metric-name">Over revving engine</span>
+              <div class="metric-extra"><span>63%</span><span>of driving time</span></div>
+              <div class="metric-score">
+                <div class="metric-divider"></div>
+                <span class="score-value">100%</span>
+              </div>
+            </div>
+
+          </div>
+          <!-- Scroll track -->
+          <div class="scroll-track">
+            <div class="scroll-thumb"></div>
+          </div>
+        </div>
+
+        <!-- Right: Chart + Additional Data -->
+        <div class="chart-area">
+
+          <!-- Chart Box -->
+          <div class="chart-box">
+            <!-- Y-axis labels -->
+            <div style="position:absolute;left:8px;top:8px;bottom:36px;display:flex;flex-direction:column;justify-content:space-between;align-items:flex-end;font-size:11px;color:#6b7280;z-index:2;">
+              <span>100%</span>
+              <span>80%</span>
+              <span>60%</span>
+              <span>40%</span>
+              <span>20%</span>
+              <span>0</span>
+            </div>
+            <!-- Grid + Chart SVG -->
+            <div style="position:absolute;left:42px;right:8px;top:8px;bottom:36px;overflow:hidden;">
+              <!-- Horizontal grid lines -->
+              <svg id="chart-svg" width="100%" height="100%" style="position:absolute;top:0;left:0;" preserveAspectRatio="none">
+                <defs>
+                  <pattern id="hgrid" x="0" y="0" width="100%" height="20%" patternUnits="objectBoundingBox">
+                    <line x1="0" y1="0" x2="100%" y2="0" stroke="#e4e5e6" stroke-width="1"/>
+                  </pattern>
+                </defs>
+                <rect width="100%" height="100%" fill="url(#hgrid)"/>
+                <!-- Vertical grid lines -->
+                <line x1="6.67%" y1="0" x2="6.67%" y2="100%" stroke="#e4e5e6" stroke-width="1"/>
+                <line x1="13.33%" y1="0" x2="13.33%" y2="100%" stroke="#e4e5e6" stroke-width="1"/>
+                <line x1="20%" y1="0" x2="20%" y2="100%" stroke="#e4e5e6" stroke-width="1"/>
+                <line x1="26.67%" y1="0" x2="26.67%" y2="100%" stroke="#e4e5e6" stroke-width="1"/>
+                <line x1="33.33%" y1="0" x2="33.33%" y2="100%" stroke="#e4e5e6" stroke-width="1"/>
+                <line x1="40%" y1="0" x2="40%" y2="100%" stroke="#e4e5e6" stroke-width="1"/>
+                <line x1="46.67%" y1="0" x2="46.67%" y2="100%" stroke="#e4e5e6" stroke-width="1"/>
+                <line x1="53.33%" y1="0" x2="53.33%" y2="100%" stroke="#e4e5e6" stroke-width="1"/>
+                <line x1="60%" y1="0" x2="60%" y2="100%" stroke="#e4e5e6" stroke-width="1"/>
+                <line x1="66.67%" y1="0" x2="66.67%" y2="100%" stroke="#e4e5e6" stroke-width="1"/>
+                <line x1="73.33%" y1="0" x2="73.33%" y2="100%" stroke="#e4e5e6" stroke-width="1"/>
+                <line x1="80%" y1="0" x2="80%" y2="100%" stroke="#e4e5e6" stroke-width="1"/>
+                <line x1="86.67%" y1="0" x2="86.67%" y2="100%" stroke="#e4e5e6" stroke-width="1"/>
+                <line x1="93.33%" y1="0" x2="93.33%" y2="100%" stroke="#e4e5e6" stroke-width="1"/>
+                <line x1="100%" y1="0" x2="100%" y2="100%" stroke="#e4e5e6" stroke-width="1"/>
+
+                <!-- Coaching indicator dashed vertical line at ~75% -->
+                <line x1="76%" y1="0" x2="76%" y2="97%" stroke="#bbbec0" stroke-width="1.5" stroke-dasharray="4,4"/>
+
+                <!-- Trend line - overall score (roughly 80% level with slight variation) -->
+                <!-- Points based on design: starts ~80%, fluctuates, goes down slightly after coaching -->
+                <polyline id="chart-line"
+                  points="0,21 6.67,18 13.33,20 20,17 26.67,16 33.33,15 40,15 46.67,17 53.33,16 60,17 66.67,18 73.33,19 80,24 86.67,24 93.33,22 100,21"
+                  fill="none" stroke="#ffb300" stroke-width="2" stroke-linejoin="round"/>
+                <!-- Dots on the trend line (clickable) -->
+                <circle id="chart-dot-0"  class="chart-dot" cx="0%"     cy="21%" r="5" fill="#ffb300" stroke="white" stroke-width="1.5" onclick="openChartEvent(0)"/>
+                <circle id="chart-dot-1"  class="chart-dot" cx="6.67%"  cy="18%" r="5" fill="#ffb300" stroke="white" stroke-width="1.5" onclick="openChartEvent(1)"/>
+                <circle id="chart-dot-2"  class="chart-dot" cx="13.33%" cy="20%" r="5" fill="#ffb300" stroke="white" stroke-width="1.5" onclick="openChartEvent(2)"/>
+                <circle id="chart-dot-3"  class="chart-dot" cx="20%"    cy="17%" r="5" fill="#ffb300" stroke="white" stroke-width="1.5" onclick="openChartEvent(3)"/>
+                <circle id="chart-dot-4"  class="chart-dot" cx="26.67%" cy="16%" r="5" fill="#ffb300" stroke="white" stroke-width="1.5" onclick="openChartEvent(4)"/>
+                <circle id="chart-dot-5"  class="chart-dot" cx="33.33%" cy="15%" r="5" fill="#ffb300" stroke="white" stroke-width="1.5" onclick="openChartEvent(5)"/>
+                <circle id="chart-dot-6"  class="chart-dot" cx="40%"    cy="15%" r="5" fill="#ffb300" stroke="white" stroke-width="1.5" onclick="openChartEvent(6)"/>
+                <circle id="chart-dot-7"  class="chart-dot" cx="46.67%" cy="17%" r="5" fill="#ffb300" stroke="white" stroke-width="1.5" onclick="openChartEvent(7)"/>
+                <circle id="chart-dot-8"  class="chart-dot" cx="53.33%" cy="16%" r="5" fill="#ffb300" stroke="white" stroke-width="1.5" onclick="openChartEvent(8)"/>
+                <circle id="chart-dot-9"  class="chart-dot" cx="60%"    cy="17%" r="5" fill="#ffb300" stroke="white" stroke-width="1.5" onclick="openChartEvent(9)"/>
+                <circle id="chart-dot-10" class="chart-dot" cx="66.67%" cy="18%" r="5" fill="#ffb300" stroke="white" stroke-width="1.5" onclick="openChartEvent(10)"/>
+                <circle id="chart-dot-11" class="chart-dot" cx="73.33%" cy="19%" r="5" fill="#ffb300" stroke="white" stroke-width="1.5" onclick="openChartEvent(11)"/>
+                <circle id="chart-dot-12" class="chart-dot" cx="80%"    cy="24%" r="5" fill="#ffb300" stroke="white" stroke-width="1.5" onclick="openChartEvent(12)"/>
+                <circle id="chart-dot-13" class="chart-dot" cx="86.67%" cy="24%" r="5" fill="#ffb300" stroke="white" stroke-width="1.5" onclick="openChartEvent(13)"/>
+                <circle id="chart-dot-14" class="chart-dot" cx="93.33%" cy="22%" r="5" fill="#ffb300" stroke="white" stroke-width="1.5" onclick="openChartEvent(14)"/>
+                <circle id="chart-dot-15" class="chart-dot" cx="100%"   cy="21%" r="5" fill="#ffb300" stroke="white" stroke-width="1.5" onclick="openChartEvent(15)"/>
+              </svg>
+            </div>
+
+            <!-- Coaching indicator icon at top -->
+            <div style="position:absolute;right:calc(24% - 16px);top:8px;width:24px;height:24px;background:#e4e5e6;border-radius:50%;display:flex;align-items:center;justify-content:center;z-index:3;">
+              <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M7 1.5l5.5 2.5-5.5 2.5L1.5 4 7 1.5z" stroke="#384045" stroke-width="1.2" stroke-linejoin="round"/><path d="M3 5.5v3c0 1.66 1.79 3 4 3s4-1.34 4-3v-3" stroke="#384045" stroke-width="1.2" stroke-linecap="round"/></svg>
+            </div>
+
+            <!-- X-axis labels -->
+            <div style="position:absolute;left:42px;right:8px;bottom:2px;display:flex;justify-content:space-between;font-size:10px;color:#6b7280;">
+              <span>Nov<br>1</span>
+              <span>Nov<br>3</span>
+              <span>Nov<br>5</span>
+              <span>Nov<br>7</span>
+              <span>Nov<br>9</span>
+              <span>Nov<br>11</span>
+              <span>Nov<br>13</span>
+              <span>Nov<br>15</span>
+              <span>Nov<br>17</span>
+              <span>Nov<br>19</span>
+              <span>Nov<br>21</span>
+              <span>Nov<br>23</span>
+              <span>Nov<br>25</span>
+              <span>Nov<br>27</span>
+              <span>Nov<br>29</span>
+            </div>
+          </div>
+
+          <!-- Additional Data -->
+          <div class="additional-data">
+            <div>
+              <div class="data-title">Excessive Idling</div>
+              <div class="data-points">
+                <div class="data-point">
+                  <span class="data-val">10h 33m</span>
+                  <span class="data-label">total idle time</span>
+                </div>
+                <div class="data-point">
+                  <span class="data-val">6%</span>
+                  <span class="data-label">of driving time</span>
+                </div>
+                <div class="data-point">
+                  <div class="trend-val">
+                    <span class="trend-num">+5%</span>
+                    <span class="trend-arrow">↓</span>
+                  </div>
+                  <span class="data-label">VS last period</span>
+                </div>
+              </div>
+            </div>
+            <button class="btn-secondary" id="view-events-btn" onclick="goToEvents()">View events</button>
+          </div>
+
+        </div><!-- /chart-area -->
+
+      </div><!-- /event-trends-component -->
+
+    </div><!-- /efficiency-section -->
+
+    <!-- ── Coaching History ── -->
+    <div class="coaching-history">
+
+      <div class="section-header">
+        <h2>Coaching History</h2>
+        <button class="btn-primary">
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><rect x="2" y="2" width="10" height="12" rx="1" stroke="white" stroke-width="1.5"/><path d="M5 6h4M5 9h3" stroke="white" stroke-width="1.2" stroke-linecap="round"/></svg>
+          Log Coaching Session
+        </button>
+      </div>
+
+      <!-- Filters -->
+      <div>
+        <div class="dropdown-field">
+          <label>Topic</label>
+          <select style="width:130px;">
+            <option>All</option>
+          </select>
+        </div>
+      </div>
+
+      <!-- Table -->
+      <div class="coaching-table-wrap">
+        <table class="coaching-table">
+          <thead>
+            <tr>
+              <th class="col-topic">Topic</th>
+              <th class="col-type">Intervention type</th>
+              <th class="col-date">
+                <div class="th-content">
+                  <svg class="sort-icon" viewBox="0 0 8 14" fill="none"><path d="M4 1v12M1 4l3-3 3 3" stroke="#384045" stroke-width="1.2" stroke-linecap="round"/><path d="M1 10l3 3 3-3" stroke="#384045" stroke-width="1.2" stroke-linecap="round" opacity=".4"/></svg>
+                  Date
+                </div>
+              </th>
+              <th class="col-status">Status</th>
+              <th class="col-more" style="text-align:right;">More Information</th>
+            </tr>
+          </thead>
+          <tbody id="coaching-tbody">
+            <tr>
+              <td>
+                <span class="metric-tag"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="6" stroke="#f23e44" stroke-width="1.3"/><path d="M8 5v3.5" stroke="#f23e44" stroke-width="1.3" stroke-linecap="round"/><circle cx="8" cy="11" r=".6" fill="#f23e44"/></svg>Speeding</span>
+              </td>
+              <td><select class="intervention-select" onchange="onInterventionChange(this)"><option value="not-defined">Not defined</option><option value="live-coaching" selected>Live coaching</option><option value="in-app-message">In-app message</option></select></td>
+              <td>21.11.2025</td>
+              <td><select class="status-select" onchange="onStatusChange(this)"><option value="draft">Draft</option><option value="scheduled">Scheduled</option><option value="in-progress">In Progress</option><option value="completed" selected>Completed</option><option value="cancelled">Cancelled</option></select></td>
+              <td>
+                <div class="actions-cell">
+                  <button class="btn-icon">
+                    <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="6" stroke="#384045" stroke-width="1.3"/><circle cx="8" cy="8" r="2.5" stroke="#384045" stroke-width="1.3"/></svg>
+                  </button>
+                  <button class="btn-icon-critical">
+                    <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M3 4h10M6 4V3h4v1M5 4v8h6V4H5z" stroke="#f23e44" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                  </button>
+                </div>
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <span class="metric-tag"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="6" stroke="#f23e44" stroke-width="1.3"/><path d="M8 5v3.5" stroke="#f23e44" stroke-width="1.3" stroke-linecap="round"/><circle cx="8" cy="11" r=".6" fill="#f23e44"/></svg>Speeding</span>
+                <span class="metric-tag"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="6" stroke="#1087d2" stroke-width="1.3"/><path d="M5 8a3 3 0 006 0" stroke="#1087d2" stroke-width="1.3" stroke-linecap="round"/><circle cx="8" cy="6" r=".7" fill="#1087d2"/></svg>Cruise Control</span>
+              </td>
+              <td><select class="intervention-select" onchange="onInterventionChange(this)"><option value="not-defined">Not defined</option><option value="live-coaching">Live coaching</option><option value="in-app-message" selected>In-app message</option></select></td>
+              <td>18.11.2025</td>
+              <td><select class="status-select" onchange="onStatusChange(this)"><option value="draft">Draft</option><option value="scheduled">Scheduled</option><option value="in-progress">In Progress</option><option value="completed" selected>Completed</option><option value="cancelled">Cancelled</option></select></td>
+              <td>
+                <div class="actions-cell">
+                  <button class="btn-icon"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="6" stroke="#384045" stroke-width="1.3"/><circle cx="8" cy="8" r="2.5" stroke="#384045" stroke-width="1.3"/></svg></button>
+                  <button class="btn-icon-critical"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M3 4h10M6 4V3h4v1M5 4v8h6V4H5z" stroke="#f23e44" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+                </div>
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <span class="metric-tag"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="6" stroke="#f23e44" stroke-width="1.3"/><path d="M8 5v3.5" stroke="#f23e44" stroke-width="1.3" stroke-linecap="round"/><circle cx="8" cy="11" r=".6" fill="#f23e44"/></svg>Speeding</span>
+                <span class="metric-tag"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M3 12c0-3 2-6 5-6s5 1 5 4" stroke="#8b5cf6" stroke-width="1.3" stroke-linecap="round"/><path d="M8 6l-2-3h4l-2 3z" stroke="#8b5cf6" stroke-width="1.1" stroke-linejoin="round"/></svg>Harsh cornering</span>
+                <span class="metric-tag"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="6" stroke="#1087d2" stroke-width="1.3"/><path d="M5 8a3 3 0 006 0" stroke="#1087d2" stroke-width="1.3" stroke-linecap="round"/><circle cx="8" cy="6" r=".7" fill="#1087d2"/></svg>Cruise Control</span>
+              </td>
+              <td><select class="intervention-select" onchange="onInterventionChange(this)"><option value="not-defined">Not defined</option><option value="live-coaching">Live coaching</option><option value="in-app-message" selected>In-app message</option></select></td>
+              <td>17.11.2025</td>
+              <td><select class="status-select" onchange="onStatusChange(this)"><option value="draft">Draft</option><option value="scheduled">Scheduled</option><option value="in-progress">In Progress</option><option value="completed" selected>Completed</option><option value="cancelled">Cancelled</option></select></td>
+              <td>
+                <div class="actions-cell">
+                  <button class="btn-icon"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="6" stroke="#384045" stroke-width="1.3"/><circle cx="8" cy="8" r="2.5" stroke="#384045" stroke-width="1.3"/></svg></button>
+                  <button class="btn-icon-critical"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M3 4h10M6 4V3h4v1M5 4v8h6V4H5z" stroke="#f23e44" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+                </div>
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <span class="metric-tag"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M3 12c0-3 2-6 5-6s5 1 5 4" stroke="#8b5cf6" stroke-width="1.3" stroke-linecap="round"/><path d="M8 6l-2-3h4l-2 3z" stroke="#8b5cf6" stroke-width="1.1" stroke-linejoin="round"/></svg>Harsh cornering</span>
+                <span class="metric-tag"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="6" stroke="#1087d2" stroke-width="1.3"/><path d="M5 8a3 3 0 006 0" stroke="#1087d2" stroke-width="1.3" stroke-linecap="round"/><circle cx="8" cy="6" r=".7" fill="#1087d2"/></svg>Cruise Control</span>
+              </td>
+              <td><select class="intervention-select" onchange="onInterventionChange(this)"><option value="not-defined">Not defined</option><option value="live-coaching">Live coaching</option><option value="in-app-message" selected>In-app message</option></select></td>
+              <td>01.11.2025</td>
+              <td><select class="status-select" onchange="onStatusChange(this)"><option value="draft">Draft</option><option value="scheduled">Scheduled</option><option value="in-progress">In Progress</option><option value="completed" selected>Completed</option><option value="cancelled">Cancelled</option></select></td>
+              <td>
+                <div class="actions-cell">
+                  <button class="btn-icon"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="6" stroke="#384045" stroke-width="1.3"/><circle cx="8" cy="8" r="2.5" stroke="#384045" stroke-width="1.3"/></svg></button>
+                  <button class="btn-icon-critical"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M3 4h10M6 4V3h4v1M5 4v8h6V4H5z" stroke="#f23e44" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+                </div>
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <span class="metric-tag"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M3 12c0-3 2-6 5-6s5 1 5 4" stroke="#8b5cf6" stroke-width="1.3" stroke-linecap="round"/><path d="M8 6l-2-3h4l-2 3z" stroke="#8b5cf6" stroke-width="1.1" stroke-linejoin="round"/></svg>Harsh cornering</span>
+                <span class="metric-tag"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="6" stroke="#1087d2" stroke-width="1.3"/><path d="M5 8a3 3 0 006 0" stroke="#1087d2" stroke-width="1.3" stroke-linecap="round"/><circle cx="8" cy="6" r=".7" fill="#1087d2"/></svg>Cruise Control</span>
+              </td>
+              <td><select class="intervention-select" onchange="onInterventionChange(this)"><option value="not-defined">Not defined</option><option value="live-coaching">Live coaching</option><option value="in-app-message" selected>In-app message</option></select></td>
+              <td>01.11.2025</td>
+              <td><select class="status-select" onchange="onStatusChange(this)"><option value="draft">Draft</option><option value="scheduled">Scheduled</option><option value="in-progress">In Progress</option><option value="completed" selected>Completed</option><option value="cancelled">Cancelled</option></select></td>
+              <td>
+                <div class="actions-cell">
+                  <button class="btn-icon"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="6" stroke="#384045" stroke-width="1.3"/><circle cx="8" cy="8" r="2.5" stroke="#384045" stroke-width="1.3"/></svg></button>
+                  <button class="btn-icon-critical"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M3 4h10M6 4V3h4v1M5 4v8h6V4H5z" stroke="#f23e44" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+                </div>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+
+        <!-- Pagination -->
+        <div class="pagination-row" style="padding-top:16px;">
+          <div class="rows-selector">
+            <span>Number of rows</span>
+            <select><option>50</option><option>25</option><option>100</option></select>
+          </div>
+          <div class="pagination">
+            <button class="page-btn active">1</button>
+            <button class="page-btn">2</button>
+            <button class="page-btn">...</button>
+            <button class="page-btn">9</button>
+            <button class="page-btn">10</button>
+            <button class="page-btn arrow">
+              <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M6 4l4 4-4 4" stroke="#384045" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </button>
+          </div>
+        </div>
+
+      </div><!-- /coaching-table-wrap -->
+
+    </div><!-- /coaching-history -->
+
+  </div><!-- /content -->
+
+</div><!-- /main-layout -->
+
+<script>
+  // ── Active metric tracking ──────────────────────────────────────
+  // Click any metric card to make it active (mirrors the chart selection)
+  document.querySelectorAll('.metric-card').forEach(function(card) {
+    card.addEventListener('click', function() {
+      // Skip the "Overall Score" card (it has the AI button, not a drill-down metric)
+      var name = card.querySelector('.metric-name');
+      if (!name || name.textContent.trim() === 'Overall Score') return;
+
+      // Deactivate all, activate clicked
+      document.querySelectorAll('.metric-card').forEach(function(c) {
+        c.classList.remove('active');
+        c.style.borderLeft = '';
+        c.style.background = '';
+        c.style.boxShadow = '';
+      });
+      card.classList.add('active');
+
+      // Update the additional-data panel title to match
+      var dataTitle = document.querySelector('.additional-data .data-title');
+      if (dataTitle) dataTitle.textContent = name.textContent.trim();
+
+      // Update chart for selected metric
+      updateChartForMetric(name.textContent.trim());
+    });
+  });
+
+  // ── Coaching sessions from event-management ──────────────────────
+  function getCurrentDriver() {
+    var h1 = document.querySelector('.breadcrumb h1');
+    var raw = h1 ? h1.textContent.trim() : '';
+    return raw.replace(/^#\d+\s+/, '');
+  }
+
+  function applyStatusStyle(sel) {
+    var v = sel.value;
+    var styles = {
+      draft:          { bg:'#fff8e6', color:'#c88000', border:'#ffe080', arrow:'%23c88000' },
+      scheduled:      { bg:'#e8f4fd', color:'#0e76c8', border:'#9ecfee', arrow:'%230e76c8' },
+      'in-progress':  { bg:'#f3eeff', color:'#7c3aed', border:'#c4a0f6', arrow:'%237c3aed' },
+      completed:      { bg:'#eaf5e0', color:'#3a7800', border:'#b8e08a', arrow:'%233a7800' },
+      cancelled:      { bg:'#f4f4f4', color:'#797f82', border:'#d0d2d3', arrow:'%23797f82' }
+    };
+    var s = styles[v] || styles.draft;
+    sel.style.cssText = 'background:' + s.bg + ';color:' + s.color + ';border-color:' + s.border
+      + ';background-image:url("data:image/svg+xml,%3Csvg xmlns=\'http://www.w3.org/2000/svg\' width=\'10\' height=\'6\'%3E%3Cpath d=\'M0 0l5 6 5-6z\' fill=\'' + s.arrow + '\'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 8px center;';
+  }
+
+  function onStatusChange(sel) {
+    applyStatusStyle(sel);
+    var eid = parseInt(sel.getAttribute('data-eid'));
+    if (eid) {
+      var sessions = JSON.parse(localStorage.getItem('coaching_sessions') || '[]');
+      sessions = sessions.map(function(s) {
+        if (s.eid === eid) s.status = sel.value;
+        return s;
+      });
+      localStorage.setItem('coaching_sessions', JSON.stringify(sessions));
+      if (sel.value === 'completed') {
+        var row = sel.closest('tr');
+        if (row) row.classList.remove('coaching-row-new');
+        showSnackbar(
+          'Coaching session marked as completed. The linked event has been moved to Resolved.',
+          'View in Event Management →',
+          'index.html'
+        );
+      }
+    }
+  }
+
+  function onInterventionChange(sel) {
+    var eid = parseInt(sel.getAttribute('data-eid'));
+    if (!eid) return;
+    var sessions = JSON.parse(localStorage.getItem('coaching_sessions') || '[]');
+    sessions = sessions.map(function(s) {
+      if (s.eid === eid) s.interventionType = sel.value;
+      return s;
+    });
+    localStorage.setItem('coaching_sessions', JSON.stringify(sessions));
+  }
+
+  function loadCoachingSessions() {
+    var driver = getCurrentDriver();
+    var sessions = JSON.parse(localStorage.getItem('coaching_sessions') || '[]');
+    var tbody = document.getElementById('coaching-tbody');
+    if (!tbody) return;
+    // Filter sessions for this driver, insert newest first
+    var mine = sessions.filter(function(s) { return s.driver === driver; }).reverse();
+    mine.forEach(function(s) {
+      var tr = document.createElement('tr');
+      tr.className = 'coaching-row-new';
+      var statusOpts = [
+        ['draft','Draft'], ['scheduled','Scheduled'], ['in-progress','In Progress'],
+        ['completed','Completed'], ['cancelled','Cancelled']
+      ];
+      var interventionOpts = [
+        ['not-defined','Not defined'], ['live-coaching','Live coaching'],
+        ['in-app-message','In-app message']
+      ];
+      var curStatus = s.status || 'draft';
+      var curIntervention = s.interventionType || 'not-defined';
+      var statusSel = '<select class="status-select" data-eid="' + s.eid + '" onchange="onStatusChange(this)">'
+        + statusOpts.map(function(o) {
+            return '<option value="' + o[0] + '"' + (curStatus === o[0] ? ' selected' : '') + '>' + o[1] + '</option>';
+          }).join('') + '</select>';
+      var interventionSel = '<select class="intervention-select" data-eid="' + s.eid + '" onchange="onInterventionChange(this)">'
+        + interventionOpts.map(function(o) {
+            return '<option value="' + o[0] + '"' + (curIntervention === o[0] ? ' selected' : '') + '>' + o[1] + '</option>';
+          }).join('') + '</select>';
+      tr.innerHTML = '<td><span class="metric-tag" style="background:#f0f7ff;border-color:#b0d4f4;">' + s.eventType + '</span></td>'
+        + '<td>' + interventionSel + '</td>'
+        + '<td>' + s.date + '</td>'
+        + '<td>' + statusSel + '</td>'
+        + '<td><div class="actions-cell">'
+        + '<button class="btn-icon"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="6" stroke="#384045" stroke-width="1.3"/><circle cx="8" cy="8" r="2.5" stroke="#384045" stroke-width="1.3"/></svg></button>'
+        + '<button class="btn-icon-critical"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M3 4h10M6 4V3h4v1M5 4v8h6V4H5z" stroke="#f23e44" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg></button>'
+        + '</div></td>';
+      tbody.insertBefore(tr, tbody.firstChild);
+    });
+  }
+
+  loadCoachingSessions();
+
+  // Apply status colours to all status selects (hardcoded + dynamic)
+  document.querySelectorAll('.status-select').forEach(applyStatusStyle);
+
+  // ── Build URL and navigate ──────────────────────────────────────
+  function goToEvents() {
+    // Extract driver name from the breadcrumb h1, strip the "#67 " prefix
+    var h1 = document.querySelector('.breadcrumb h1');
+    var driverRaw = h1 ? h1.textContent.trim() : '';
+    // Remove leading "#NN " e.g. "#67 Vasili Koltest" → "Vasili Koltest"
+    var driver = driverRaw.replace(/^#\d+\s+/, '');
+
+    // Get the currently active metric name
+    var activeCard = document.querySelector('.metric-card.active');
+    var metric = activeCard
+      ? activeCard.querySelector('.metric-name').textContent.trim()
+      : '';
+
+    // Build query string
+    var params = new URLSearchParams();
+    params.set('from', 'coaching');
+    if (driver) params.set('driver', driver);
+    if (metric) params.set('eventType', metric);
+
+    window.location.href = 'index.html?' + params.toString();
+  }
+
+  // ── Chart Event Panel ──────────────────────────────────────────
+  var CHART_DRIVERS  = { 'Vasili Koltest': { initials:'VK', events:8, score:58 } };
+  var CHART_VEHICLES = { 'TRK-2287': { model:'Mack Anthem', health:71 } };
+  var CHART_DATES    = ['Nov 1','Nov 3','Nov 5','Nov 7','Nov 9','Nov 11','Nov 13','Nov 15','Nov 17','Nov 19','Nov 21','Nov 23','Nov 25','Nov 27','Nov 29','Nov 30'];
+  var CHART_SCORES   = [79,82,80,83,84,85,85,83,84,83,82,81,76,76,78,79];
+  var CHART_EVENTS   = [
+    // Nov 1 (79%) – Excessive Idling ×2, medium
+    { type:'Excessive Idling', icon:'⏱️', sev:'medium', status:'Resolved',
+      grouped:true, count:2,
+      driver:'Vasili Koltest', vehicle:'TRK-2287',
+      date:'01.11.2025', timeRange:'07:45 – 14:20', location:'Riga & Jelgava area',
+      detection:'GPS Telematics',
+      weather:'Cloudy', weatherColor:'#797f82', road:'Dry', roadColor:'#65b200',
+      desc:'Two idling events across the shift. Engine left running during loading bay delays at two separate stops, together accounting for 57 minutes of unnecessary idle time.',
+      occurrences:[
+        { time:'07:45', sev:'medium', dur:'35 min', location:'Distribution Centre, Riga',  hasVideo:false },
+        { time:'14:20', sev:'low',    dur:'22 min', location:'Loading Bay, Jelgava',       hasVideo:false }
+      ]},
+    // Nov 3 (82%) – Harsh Braking, low
+    { type:'Harsh Braking', icon:'⚠️', sev:'low', status:'Resolved',
+      driver:'Vasili Koltest', vehicle:'TRK-2287',
+      datetime:'03.11.2025 - 10:22', location:'A1 Highway, KM 45',
+      speed:'68 km/h', duration:'1.6s', detection:'AI Camera',
+      weather:'Clear', weatherColor:'#d48000', road:'Dry', roadColor:'#65b200',
+      desc:'Minor braking event triggered at highway junction. Deceleration within acceptable range — small score deduction for the day.' },
+    // Nov 5 (80%) – Excessive Idling, medium
+    { type:'Excessive Idling', icon:'⏱️', sev:'medium', status:'Resolved',
+      driver:'Vasili Koltest', vehicle:'TRK-2287',
+      datetime:'05.11.2025 - 08:15', location:'Warehouse Loading Bay, Jelgava',
+      speed:'0 km/h', duration:'28 min', detection:'GPS Telematics',
+      weather:'Cloudy', weatherColor:'#797f82', road:'Dry', roadColor:'#65b200',
+      desc:'Vehicle idling for 28 minutes at warehouse bay during cargo inspection delay.' },
+    // Nov 7 (83%) – Harsh Acceleration, low
+    { type:'Harsh Acceleration', icon:'⚡', sev:'low', status:'Resolved',
+      driver:'Vasili Koltest', vehicle:'TRK-2287',
+      datetime:'07.11.2025 - 13:10', location:'Industrial Zone, Salaspils',
+      speed:'0 → 48 km/h', duration:'3.5s', detection:'GPS Telematics',
+      weather:'Clear', weatherColor:'#d48000', road:'Dry', roadColor:'#65b200',
+      desc:'Moderate acceleration from traffic lights. Speed reached 48 km/h in 3.5 seconds — marginally above threshold for a fully laden vehicle.' },
+    // Nov 9 (84%) – Harsh Braking, low
+    { type:'Harsh Braking', icon:'⚠️', sev:'low', status:'Resolved',
+      driver:'Vasili Koltest', vehicle:'TRK-2287',
+      datetime:'09.11.2025 - 11:40', location:'Highway A2, KM 88',
+      speed:'72 km/h', duration:'2.1s', detection:'AI Camera',
+      weather:'Rain', weatherColor:'#1087d2', road:'Wet', roadColor:'#d48000',
+      desc:'Braking event on wet road at highway merge point. Speed reduced from 72 km/h to 28 km/h. Low severity — driver adjusted well to road conditions.' },
+    // Nov 11 (85%) – Coasting, low
+    { type:'Coasting', icon:'➡️', sev:'low', status:'Resolved',
+      driver:'Vasili Koltest', vehicle:'TRK-2287',
+      datetime:'11.11.2025 - 09:30', location:'A6 Highway, KM 22',
+      speed:'61 km/h', duration:'18s', detection:'GPS Telematics',
+      weather:'Clear', weatherColor:'#d48000', road:'Dry', roadColor:'#65b200',
+      desc:'Brief coasting on gentle downhill gradient, gear disengaged for 18 seconds. Minor score deduction — best day this month.' },
+    // Nov 13 (85%) – Harsh cornering, low
+    { type:'Harsh cornering', icon:'🔄', sev:'low', status:'Resolved',
+      driver:'Vasili Koltest', vehicle:'TRK-2287',
+      datetime:'13.11.2025 - 14:55', location:'Roundabout, Ogre',
+      speed:'38 km/h', duration:'1.1s', detection:'AI Camera',
+      weather:'Clear', weatherColor:'#d48000', road:'Dry', roadColor:'#65b200',
+      desc:'Minor lateral movement at roundabout. Speed within limits — slight cornering angle excess for a laden vehicle. Overall a strong shift.' },
+    // Nov 15 (83%) – Excessive Idling, medium
+    { type:'Excessive Idling', icon:'⏱️', sev:'medium', status:'Resolved',
+      driver:'Vasili Koltest', vehicle:'TRK-2287',
+      datetime:'15.11.2025 - 06:55', location:'Border Checkpoint, Terehova',
+      speed:'0 km/h', duration:'31 min', detection:'GPS Telematics',
+      weather:'Cloudy', weatherColor:'#797f82', road:'Dry', roadColor:'#65b200',
+      desc:'Engine running for 31 minutes during customs documentation check at border checkpoint. Queue longer than anticipated.',
+      driverReport:{ date:'15.11.2025 - 08:20', text:'Border queue was unusually long. Kept engine running as instructed by dispatch to maintain temperature for the refrigerated load.' } },
+    // Nov 17 (84%) – Harsh Acceleration, low
+    { type:'Harsh Acceleration', icon:'⚡', sev:'low', status:'Actioned',
+      driver:'Vasili Koltest', vehicle:'TRK-2287',
+      datetime:'17.11.2025 - 07:30', location:'Depot Exit, Ventspils',
+      speed:'0 → 52 km/h', duration:'3.8s', detection:'GPS Telematics',
+      weather:'Cloudy', weatherColor:'#797f82', road:'Dry', roadColor:'#65b200',
+      desc:'Rapid acceleration from loading bay exit. A separate excessive idling event (47 min) was also recorded this shift and contributed to the coaching session that was assigned.' },
+    // Nov 19 (83%) – Coasting, medium
+    { type:'Coasting', icon:'➡️', sev:'medium', status:'Resolved',
+      driver:'Vasili Koltest', vehicle:'TRK-2287',
+      datetime:'19.11.2025 - 12:15', location:'E67 Highway, KM 110',
+      speed:'74 km/h', duration:'34s', detection:'GPS Telematics',
+      weather:'Rain', weatherColor:'#1087d2', road:'Wet', roadColor:'#d48000',
+      desc:'Extended coasting on downhill gradient with gear disengaged for 34 seconds, reducing engine braking effectiveness on a wet road.' },
+    // Nov 21 (82%) – Excessive Idling ×3, high (coaching trigger)
+    { type:'Excessive Idling', icon:'⏱️', sev:'high', status:'Actioned',
+      grouped:true, count:3,
+      driver:'Vasili Koltest', vehicle:'TRK-2287',
+      date:'21.11.2025', timeRange:'06:45 – 16:15', location:'Multiple stops',
+      detection:'GPS Telematics',
+      weather:'Partly cloudy', weatherColor:'#797f82', road:'Dry', roadColor:'#65b200',
+      desc:'Three idling events across the full shift, totalling 1h 28min of unnecessary engine runtime. Recurring pattern flagged — live coaching session assigned.',
+      driverReport:{ date:'21.11.2025 - 18:00', text:'Each stop had delays outside my control — dock assignments, a stuck gate barrier, and cargo documentation. I understand the impact and will apply the engine-off policy more consistently going forward.' },
+      occurrences:[
+        { time:'06:45', sev:'high',   dur:'41 min', location:'Fuel Stop, A1 Highway',   hasVideo:false },
+        { time:'11:30', sev:'medium', dur:'28 min', location:'Depot Bay, Riga',          hasVideo:false },
+        { time:'16:15', sev:'medium', dur:'19 min', location:'Loading Bay, Ventspils',   hasVideo:false }
+      ]},
+    // Nov 23 (81%) – Harsh cornering ×2, medium
+    { type:'Harsh cornering', icon:'🔄', sev:'medium', status:'Resolved',
+      grouped:true, count:2,
+      driver:'Vasili Koltest', vehicle:'TRK-2287',
+      date:'23.11.2025', timeRange:'09:10 – 15:45', location:'E22 Corridor',
+      detection:'AI Camera',
+      weather:'Clear', weatherColor:'#d48000', road:'Dry', roadColor:'#65b200',
+      desc:'Two cornering events on the same route. Lateral movement exceeded recommended limits for a laden vehicle at both exit ramps on the E22 corridor.',
+      occurrences:[
+        { time:'09:10', sev:'medium', dur:'1.4s', location:'E22 Highway, KM 34',  hasVideo:true  },
+        { time:'15:45', sev:'medium', dur:'1.8s', location:'E22 Exit, Jūrmala',   hasVideo:true  }
+      ]},
+    // Nov 25 (76%) – Excessive Idling ×3, high (worst day — coaching indicator)
+    { type:'Excessive Idling', icon:'⏱️', sev:'high', status:'Actioned',
+      grouped:true, count:3,
+      driver:'Vasili Koltest', vehicle:'TRK-2287',
+      date:'25.11.2025', timeRange:'07:10 – 17:30', location:'Multiple stops',
+      detection:'GPS Telematics',
+      weather:'Rain', weatherColor:'#1087d2', road:'Wet', roadColor:'#d48000',
+      desc:'Three idling events totalling 1h 54min. Combined with harsh braking and acceleration events recorded the same day, the pattern triggered a coaching session.',
+      driverReport:{ date:'25.11.2025 - 19:30', text:'Loading crane was unavailable at Daugavpils for the first hour. The other stops had documentation delays. Cargo required climate control so I kept the engine running. I informed the site supervisor each time.' },
+      occurrences:[
+        { time:'07:10', sev:'high',   dur:'52 min', location:'Warehouse, Daugavpils',  hasVideo:false },
+        { time:'12:45', sev:'medium', dur:'35 min', location:'Rest Stop, E22',          hasVideo:false },
+        { time:'17:30', sev:'medium', dur:'27 min', location:'Depot, Riga',             hasVideo:false }
+      ]},
+    // Nov 27 (76%) – Harsh Braking ×3, medium
+    { type:'Harsh Braking', icon:'⚠️', sev:'medium', status:'Resolved',
+      grouped:true, count:3,
+      driver:'Vasili Koltest', vehicle:'TRK-2287',
+      date:'27.11.2025', timeRange:'09:15 – 15:10', location:'Riga & Jūrmala area',
+      detection:'AI Camera',
+      weather:'Rain', weatherColor:'#1087d2', road:'Wet', roadColor:'#d48000',
+      desc:'Three braking events on a wet-road day. Deceleration forces exceeded thresholds at each point — wet surface conditions were a contributing factor.',
+      occurrences:[
+        { time:'09:15', sev:'medium', dur:'2.0s', location:'Roundabout, Jūrmala',  hasVideo:true  },
+        { time:'13:40', sev:'medium', dur:'2.4s', location:'A10 Highway, KM 55',   hasVideo:false },
+        { time:'15:10', sev:'low',    dur:'1.8s', location:'Urban Road, Riga',     hasVideo:true  }
+      ]},
+    // Nov 29 (78%) – Coasting, low — recovering
+    { type:'Coasting', icon:'➡️', sev:'low', status:'Resolved',
+      driver:'Vasili Koltest', vehicle:'TRK-2287',
+      datetime:'29.11.2025 - 11:20', location:'A7 Highway, KM 67',
+      speed:'65 km/h', duration:'22s', detection:'GPS Telematics',
+      weather:'Clear', weatherColor:'#d48000', road:'Dry', roadColor:'#65b200',
+      desc:'Brief coasting event on downhill gradient — within policy threshold. Score is recovering following the coaching session earlier in the month.' },
+    // Nov 30 (79%) – Harsh Acceleration, low — continuing recovery
+    { type:'Harsh Acceleration', icon:'⚡', sev:'low', status:'Resolved',
+      driver:'Vasili Koltest', vehicle:'TRK-2287',
+      datetime:'30.11.2025 - 08:40', location:'Depot Exit, Riga',
+      speed:'0 → 50 km/h', duration:'3.6s', detection:'GPS Telematics',
+      weather:'Clear', weatherColor:'#d48000', road:'Dry', roadColor:'#65b200',
+      desc:'Minor acceleration event from depot exit. Continuing improvement trend since the coaching session — score up from the Nov 25–27 low.' }
+  ];
+
+  // ── Per-metric chart data ──────────────────────────────────────────
+  var activeMetricName = 'Excessive Idling';
+
+  var METRIC_COLORS = {
+    'Eco Speed':           '#65b200',
+    'Excessive Idling':    '#0d9488',
+    'Cruise Control':      '#1087d2',
+    'Coasting':            '#3b82f6',
+    'Harsh Breaking':      '#e8a000',
+    'Harsh Acceleration':  '#f97316',
+    'Harsh cornering':     '#8b5cf6',
+    'Green RPM':           '#22c55e',
+    'Overspeed':           '#f23e44',
+    'Over revving engine': '#797f82'
+  };
+
+  var METRIC_DATA = {
+    'Excessive Idling': {
+      scores: [79,82,80,83,84,85,85,83,84,83,82,81,76,76,78,79],
+      events: CHART_EVENTS
+    },
+
+    'Eco Speed': {
+      scores: [52,55,50,54,56,53,51,52,50,48,46,44,38,40,44,48],
+      events: [
+        { type:'Eco Speed Violation', icon:'↗️', sev:'high', status:'Resolved',
+          driver:'Vasili Koltest', vehicle:'TRK-2287',
+          datetime:'01.11.2025 - 09:15', location:'A1 Highway, KM 30', speed:'96 km/h', duration:'12 min', detection:'GPS Telematics',
+          weather:'Cloudy', weatherColor:'#797f82', road:'Dry', roadColor:'#65b200',
+          desc:'Speed sustained above eco-speed threshold (85 km/h) for 12 minutes on the A1 highway. Fuel consumption increased approximately 18% above baseline during this segment.' },
+        { type:'Eco Speed Violation', icon:'↗️', sev:'medium', status:'Resolved',
+          driver:'Vasili Koltest', vehicle:'TRK-2287',
+          datetime:'03.11.2025 - 11:30', location:'E67 Highway, KM 55', speed:'91 km/h', duration:'9 min', detection:'GPS Telematics',
+          weather:'Clear', weatherColor:'#d48000', road:'Dry', roadColor:'#65b200',
+          desc:'Vehicle exceeded eco-speed threshold at 91 km/h for 9 minutes. Slightly improved on prior days but still above optimal fuel efficiency range.' },
+        { type:'Eco Speed Violation', icon:'↗️', sev:'high', status:'Resolved',
+          driver:'Vasili Koltest', vehicle:'TRK-2287',
+          datetime:'05.11.2025 - 08:40', location:'A2 Highway, KM 78', speed:'98 km/h', duration:'14 min', detection:'GPS Telematics',
+          weather:'Cloudy', weatherColor:'#797f82', road:'Dry', roadColor:'#65b200',
+          desc:'Speed reached 98 km/h — significantly above eco threshold. Extended high-speed segment contributed to the below-average daily score.' },
+        { type:'Eco Speed Violation', icon:'↗️', sev:'medium', status:'Resolved',
+          driver:'Vasili Koltest', vehicle:'TRK-2287',
+          datetime:'07.11.2025 - 14:00', location:'E77 Highway, KM 20', speed:'93 km/h', duration:'10 min', detection:'GPS Telematics',
+          weather:'Clear', weatherColor:'#d48000', road:'Dry', roadColor:'#65b200',
+          desc:'Brief high-speed segment at 93 km/h during afternoon run. Small improvement from previous days.' },
+        { type:'Eco Speed Violation', icon:'↗️', sev:'medium', status:'Resolved',
+          driver:'Vasili Koltest', vehicle:'TRK-2287',
+          datetime:'09.11.2025 - 10:45', location:'A1 Highway, KM 62', speed:'90 km/h', duration:'8 min', detection:'GPS Telematics',
+          weather:'Rain', weatherColor:'#1087d2', road:'Wet', roadColor:'#d48000',
+          desc:'Speed exceeded eco threshold despite wet road conditions. 8-minute segment above 85 km/h in rain.' },
+        { type:'Eco Speed Violation', icon:'↗️', sev:'high', status:'Resolved',
+          driver:'Vasili Koltest', vehicle:'TRK-2287',
+          datetime:'11.11.2025 - 13:20', location:'E67 Highway, KM 88', speed:'95 km/h', duration:'11 min', detection:'GPS Telematics',
+          weather:'Clear', weatherColor:'#d48000', road:'Dry', roadColor:'#65b200',
+          desc:'Speed of 95 km/h recorded for 11 minutes on open highway. Persistent over-threshold driving pulling the score below midpoint.' },
+        { type:'Eco Speed Violation', icon:'↗️', sev:'high', status:'Resolved',
+          driver:'Vasili Koltest', vehicle:'TRK-2287',
+          datetime:'13.11.2025 - 09:05', location:'A6 Highway, KM 14', speed:'97 km/h', duration:'13 min', detection:'GPS Telematics',
+          weather:'Clear', weatherColor:'#d48000', road:'Dry', roadColor:'#65b200',
+          desc:'High-speed driving at 97 km/h on the morning run. Score approaching month low for this metric.' },
+        { type:'Eco Speed Violation', icon:'↗️', sev:'high', status:'Resolved',
+          driver:'Vasili Koltest', vehicle:'TRK-2287',
+          datetime:'15.11.2025 - 07:50', location:'E77 Highway, KM 41', speed:'94 km/h', duration:'12 min', detection:'GPS Telematics',
+          weather:'Cloudy', weatherColor:'#797f82', road:'Dry', roadColor:'#65b200',
+          desc:'Morning departure at above eco-speed for 12 minutes, consistent with the driver\'s high-speed highway pattern noted throughout the month.' },
+        { type:'Eco Speed Violation', icon:'↗️', sev:'high', status:'Resolved',
+          driver:'Vasili Koltest', vehicle:'TRK-2287',
+          datetime:'17.11.2025 - 12:10', location:'A2 Highway, KM 95', speed:'99 km/h', duration:'14 min', detection:'GPS Telematics',
+          weather:'Cloudy', weatherColor:'#797f82', road:'Dry', roadColor:'#65b200',
+          desc:'Speed reached near 100 km/h for 14 minutes. Score tied with Nov 5 as a low point before the trend worsens.' },
+        { type:'Eco Speed Violation', icon:'↗️', sev:'high', status:'Resolved',
+          driver:'Vasili Koltest', vehicle:'TRK-2287',
+          datetime:'19.11.2025 - 10:30', location:'A1 Highway, KM 77', speed:'101 km/h', duration:'15 min', detection:'GPS Telematics',
+          weather:'Rain', weatherColor:'#1087d2', road:'Wet', roadColor:'#d48000',
+          desc:'Speed exceeded 100 km/h in wet conditions. Daily score dropped to 48% — in the red zone for the first time this month.' },
+        { type:'Eco Speed Violation', icon:'↗️', sev:'high', status:'Actioned',
+          driver:'Vasili Koltest', vehicle:'TRK-2287',
+          datetime:'21.11.2025 - 08:15', location:'E67 Highway, KM 66', speed:'103 km/h', duration:'16 min', detection:'GPS Telematics',
+          weather:'Partly cloudy', weatherColor:'#797f82', road:'Dry', roadColor:'#65b200',
+          desc:'Speed reached 103 km/h — worst single event to date. Combined with sustained higher average speeds throughout the shift, the daily score fell to 46%.' },
+        { type:'Eco Speed Violation', icon:'↗️', sev:'high', status:'Resolved',
+          driver:'Vasili Koltest', vehicle:'TRK-2287',
+          datetime:'23.11.2025 - 09:40', location:'A1 Highway, KM 19', speed:'104 km/h', duration:'18 min', detection:'GPS Telematics',
+          weather:'Clear', weatherColor:'#d48000', road:'Dry', roadColor:'#65b200',
+          desc:'Speed at 104 km/h for 18 minutes — highest duration of the month. Score at 44%, approaching monthly low.' },
+        { type:'Eco Speed Violation', icon:'↗️', sev:'high', status:'Actioned',
+          grouped:true, count:3,
+          driver:'Vasili Koltest', vehicle:'TRK-2287',
+          date:'25.11.2025', timeRange:'07:20 – 16:50', location:'A1 & E67 highways',
+          detection:'GPS Telematics',
+          weather:'Rain', weatherColor:'#1087d2', road:'Wet', roadColor:'#d48000',
+          desc:'Three eco-speed violations across the full shift, totalling 45 minutes above threshold. Worst eco-speed day of the month — a coaching session was triggered.',
+          occurrences:[
+            { time:'07:20', sev:'high',   dur:'16 min', location:'A1 Highway, KM 30',  hasVideo:false },
+            { time:'12:05', sev:'high',   dur:'18 min', location:'E67 Highway, KM 72', hasVideo:false },
+            { time:'16:50', sev:'medium', dur:'11 min', location:'A2 Highway, KM 48',  hasVideo:false }
+          ]},
+        { type:'Eco Speed Violation', icon:'↗️', sev:'high', status:'Resolved',
+          grouped:true, count:2,
+          driver:'Vasili Koltest', vehicle:'TRK-2287',
+          date:'27.11.2025', timeRange:'09:30 – 15:20', location:'E77 corridor',
+          detection:'GPS Telematics',
+          weather:'Rain', weatherColor:'#1087d2', road:'Wet', roadColor:'#d48000',
+          desc:'Two high-speed violations on a wet road day. Score remained very low despite slight improvement from the Nov 25 low.',
+          occurrences:[
+            { time:'09:30', sev:'high',   dur:'14 min', location:'E77 Highway, KM 38', hasVideo:false },
+            { time:'15:20', sev:'medium', dur:'12 min', location:'E77 Highway, KM 71', hasVideo:false }
+          ]},
+        { type:'Eco Speed Violation', icon:'↗️', sev:'medium', status:'Resolved',
+          driver:'Vasili Koltest', vehicle:'TRK-2287',
+          datetime:'29.11.2025 - 11:40', location:'A1 Highway, KM 55', speed:'92 km/h', duration:'10 min', detection:'GPS Telematics',
+          weather:'Clear', weatherColor:'#d48000', road:'Dry', roadColor:'#65b200',
+          desc:'Speed above eco threshold for 10 minutes. Score recovering slightly after coaching, but still significantly below target.' },
+        { type:'Eco Speed Violation', icon:'↗️', sev:'medium', status:'Resolved',
+          driver:'Vasili Koltest', vehicle:'TRK-2287',
+          datetime:'30.11.2025 - 08:55', location:'E67 Highway, KM 30', speed:'90 km/h', duration:'9 min', detection:'GPS Telematics',
+          weather:'Clear', weatherColor:'#d48000', road:'Dry', roadColor:'#65b200',
+          desc:'Speed above 85 km/h eco threshold for 9 minutes. End-of-month score stabilising but still in the red zone.' }
+      ]
+    },
+
+    'Cruise Control': {
+      scores: [62,65,68,64,70,66,68,62,65,68,58,55,48,52,58,62],
+      events: [
+        { type:'Cruise Control Not Used', icon:'✈️', sev:'medium', status:'Resolved',
+          driver:'Vasili Koltest', vehicle:'TRK-2287',
+          datetime:'01.11.2025 - 09:00', location:'A1 Highway, KM 30–60', speed:'72 km/h', duration:'24 min', detection:'GPS Telematics',
+          weather:'Cloudy', weatherColor:'#797f82', road:'Dry', roadColor:'#65b200',
+          desc:'Cruise control not engaged during a 24-minute eligible highway segment. Manual speed regulation resulted in minor speed fluctuations and sub-optimal fuel use.' },
+        { type:'Cruise Control Not Used', icon:'✈️', sev:'medium', status:'Resolved',
+          driver:'Vasili Koltest', vehicle:'TRK-2287',
+          datetime:'03.11.2025 - 13:10', location:'E67 Highway, KM 44–62', speed:'75 km/h', duration:'18 min', detection:'GPS Telematics',
+          weather:'Clear', weatherColor:'#d48000', road:'Dry', roadColor:'#65b200',
+          desc:'Cruise control not activated on suitable straight highway segment (18 min). Small improvement over Nov 1 but still below target.' },
+        { type:'Cruise Control Not Used', icon:'✈️', sev:'low', status:'Resolved',
+          driver:'Vasili Koltest', vehicle:'TRK-2287',
+          datetime:'05.11.2025 - 10:20', location:'A2 Highway, KM 70–82', speed:'73 km/h', duration:'14 min', detection:'GPS Telematics',
+          weather:'Cloudy', weatherColor:'#797f82', road:'Dry', roadColor:'#65b200',
+          desc:'Brief eligible segment (14 min) driven without cruise control. Score improving — driver using cruise on other segments.' },
+        { type:'Cruise Control Not Used', icon:'✈️', sev:'medium', status:'Resolved',
+          driver:'Vasili Koltest', vehicle:'TRK-2287',
+          datetime:'07.11.2025 - 14:30', location:'E77 Highway, KM 10–34', speed:'76 km/h', duration:'20 min', detection:'GPS Telematics',
+          weather:'Clear', weatherColor:'#d48000', road:'Dry', roadColor:'#65b200',
+          desc:'Cruise control inactive for a 20-minute highway stretch. Score dipped slightly — afternoon run with manual speed management.' },
+        { type:'Cruise Control Not Used', icon:'✈️', sev:'low', status:'Resolved',
+          driver:'Vasili Koltest', vehicle:'TRK-2287',
+          datetime:'09.11.2025 - 11:00', location:'A1 Highway, KM 50–60', speed:'70 km/h', duration:'10 min', detection:'GPS Telematics',
+          weather:'Rain', weatherColor:'#1087d2', road:'Wet', roadColor:'#d48000',
+          desc:'Short eligible segment (10 min) without cruise on a wet-road day. Best score this week — driver clearly improving.' },
+        { type:'Cruise Control Not Used', icon:'✈️', sev:'medium', status:'Resolved',
+          driver:'Vasili Koltest', vehicle:'TRK-2287',
+          datetime:'11.11.2025 - 09:45', location:'E67 Highway, KM 80–100', speed:'74 km/h', duration:'16 min', detection:'GPS Telematics',
+          weather:'Clear', weatherColor:'#d48000', road:'Dry', roadColor:'#65b200',
+          desc:'16 minutes of eligible highway driving without cruise engagement. Slight decline from previous day.' },
+        { type:'Cruise Control Not Used', icon:'✈️', sev:'low', status:'Resolved',
+          driver:'Vasili Koltest', vehicle:'TRK-2287',
+          datetime:'13.11.2025 - 15:10', location:'A6 Highway, KM 20–32', speed:'71 km/h', duration:'12 min', detection:'GPS Telematics',
+          weather:'Clear', weatherColor:'#d48000', road:'Dry', roadColor:'#65b200',
+          desc:'12-minute stretch without cruise control on the afternoon return. Score held steady at 68%.' },
+        { type:'Cruise Control Not Used', icon:'✈️', sev:'medium', status:'Resolved',
+          driver:'Vasili Koltest', vehicle:'TRK-2287',
+          datetime:'15.11.2025 - 07:00', location:'E77 Highway, KM 5–28', speed:'77 km/h', duration:'22 min', detection:'GPS Telematics',
+          weather:'Cloudy', weatherColor:'#797f82', road:'Dry', roadColor:'#65b200',
+          desc:'Early morning run — 22 minutes of eligible highway driving manually controlled. Score dropped 6 points from the prior session.' },
+        { type:'Cruise Control Not Used', icon:'✈️', sev:'medium', status:'Resolved',
+          driver:'Vasili Koltest', vehicle:'TRK-2287',
+          datetime:'17.11.2025 - 12:30', location:'A2 Highway, KM 88–106', speed:'75 km/h', duration:'18 min', detection:'GPS Telematics',
+          weather:'Cloudy', weatherColor:'#797f82', road:'Dry', roadColor:'#65b200',
+          desc:'Cruise control not used during an 18-minute midday highway segment. Minor improvement from previous day.' },
+        { type:'Cruise Control Not Used', icon:'✈️', sev:'low', status:'Resolved',
+          driver:'Vasili Koltest', vehicle:'TRK-2287',
+          datetime:'19.11.2025 - 13:00', location:'A1 Highway, KM 40–52', speed:'72 km/h', duration:'13 min', detection:'GPS Telematics',
+          weather:'Rain', weatherColor:'#1087d2', road:'Wet', roadColor:'#d48000',
+          desc:'13-minute eligible segment without cruise. Score held at 68% — driver mostly using cruise on other segments.' },
+        { type:'Cruise Control Not Used', icon:'✈️', sev:'high', status:'Actioned',
+          driver:'Vasili Koltest', vehicle:'TRK-2287',
+          datetime:'21.11.2025 - 08:00', location:'E67 Highway, KM 22–60', speed:'79 km/h', duration:'30 min', detection:'GPS Telematics',
+          weather:'Partly cloudy', weatherColor:'#797f82', road:'Dry', roadColor:'#65b200',
+          desc:'30-minute eligible stretch driven entirely without cruise control. Score dropped 10 points — largest single-day decline for this metric.' },
+        { type:'Cruise Control Not Used', icon:'✈️', sev:'high', status:'Resolved',
+          driver:'Vasili Koltest', vehicle:'TRK-2287',
+          datetime:'23.11.2025 - 10:20', location:'A1 Highway, KM 12–56', speed:'80 km/h', duration:'36 min', detection:'GPS Telematics',
+          weather:'Clear', weatherColor:'#d48000', road:'Dry', roadColor:'#65b200',
+          desc:'Longest manual highway segment this month — 36 minutes without cruise on a clear, straight road. Score fell to 55%.' },
+        { type:'Cruise Control Not Used', icon:'✈️', sev:'high', status:'Actioned',
+          grouped:true, count:2,
+          driver:'Vasili Koltest', vehicle:'TRK-2287',
+          date:'25.11.2025', timeRange:'07:10 – 15:40', location:'A2 & E67 highways',
+          detection:'GPS Telematics',
+          weather:'Rain', weatherColor:'#1087d2', road:'Wet', roadColor:'#d48000',
+          desc:'Two extended highway segments driven without cruise control, totalling 48 minutes of eligible time. Worst day for this metric — coaching session assigned.',
+          occurrences:[
+            { time:'07:10', sev:'high', dur:'28 min', location:'A2 Highway, KM 60–88',  hasVideo:false },
+            { time:'15:40', sev:'high', dur:'20 min', location:'E67 Highway, KM 44–66', hasVideo:false }
+          ]},
+        { type:'Cruise Control Not Used', icon:'✈️', sev:'high', status:'Resolved',
+          driver:'Vasili Koltest', vehicle:'TRK-2287',
+          datetime:'27.11.2025 - 09:00', location:'A1 Highway, KM 22–56', speed:'81 km/h', duration:'34 min', detection:'GPS Telematics',
+          weather:'Rain', weatherColor:'#1087d2', road:'Wet', roadColor:'#d48000',
+          desc:'34-minute manual highway segment on a wet road. Score remained very low — driver yet to apply coaching feedback.' },
+        { type:'Cruise Control Not Used', icon:'✈️', sev:'medium', status:'Resolved',
+          driver:'Vasili Koltest', vehicle:'TRK-2287',
+          datetime:'29.11.2025 - 11:30', location:'E77 Highway, KM 14–30', speed:'74 km/h', duration:'20 min', detection:'GPS Telematics',
+          weather:'Clear', weatherColor:'#d48000', road:'Dry', roadColor:'#65b200',
+          desc:'Improvement from the post-coaching period — 20-minute manual segment (vs 34 min prior). Score recovering.' },
+        { type:'Cruise Control Not Used', icon:'✈️', sev:'medium', status:'Resolved',
+          driver:'Vasili Koltest', vehicle:'TRK-2287',
+          datetime:'30.11.2025 - 08:45', location:'A6 Highway, KM 8–24', speed:'72 km/h', duration:'18 min', detection:'GPS Telematics',
+          weather:'Clear', weatherColor:'#d48000', road:'Dry', roadColor:'#65b200',
+          desc:'18-minute eligible highway segment without cruise. Score recovered to 62% — end-of-month at same level as start, with continued room for improvement.' }
+      ]
+    },
+
+    'Coasting': {
+      scores: [50,54,48,55,58,52,50,53,49,46,44,42,37,39,44,48],
+      events: [
+        { type:'Coasting', icon:'➡️', sev:'high', status:'Resolved',
+          driver:'Vasili Koltest', vehicle:'TRK-2287',
+          datetime:'01.11.2025 - 09:20', location:'A1 Highway, KM 45', speed:'68 km/h', duration:'42s', detection:'GPS Telematics',
+          weather:'Cloudy', weatherColor:'#797f82', road:'Dry', roadColor:'#65b200',
+          desc:'Extended coasting on downhill gradient, gear disengaged for 42 seconds. Engine braking not applied — fuel and safety concern recorded.' },
+        { type:'Coasting', icon:'➡️', sev:'medium', status:'Resolved',
+          driver:'Vasili Koltest', vehicle:'TRK-2287',
+          datetime:'03.11.2025 - 11:15', location:'E67 Highway, KM 61', speed:'65 km/h', duration:'35s', detection:'GPS Telematics',
+          weather:'Clear', weatherColor:'#d48000', road:'Dry', roadColor:'#65b200',
+          desc:'35 seconds of coasting on a gentle descent. Marginal improvement from prior day but still above acceptable threshold.' },
+        { type:'Coasting', icon:'➡️', sev:'high', status:'Resolved',
+          driver:'Vasili Koltest', vehicle:'TRK-2287',
+          datetime:'05.11.2025 - 08:50', location:'A2 Highway, KM 82', speed:'72 km/h', duration:'48s', detection:'GPS Telematics',
+          weather:'Cloudy', weatherColor:'#797f82', road:'Dry', roadColor:'#65b200',
+          desc:'48-second coasting event — longest to date. Vehicle speed 72 km/h with gear disengaged, reducing engine control on the descent.' },
+        { type:'Coasting', icon:'➡️', sev:'medium', status:'Resolved',
+          driver:'Vasili Koltest', vehicle:'TRK-2287',
+          datetime:'07.11.2025 - 14:10', location:'E77 Highway, KM 28', speed:'63 km/h', duration:'32s', detection:'GPS Telematics',
+          weather:'Clear', weatherColor:'#d48000', road:'Dry', roadColor:'#65b200',
+          desc:'32 seconds of coasting. Best performance this week — slight improvement in engine braking use on similar gradients.' },
+        { type:'Coasting', icon:'➡️', sev:'medium', status:'Resolved',
+          driver:'Vasili Koltest', vehicle:'TRK-2287',
+          datetime:'09.11.2025 - 11:50', location:'A1 Highway, KM 70', speed:'61 km/h', duration:'28s', detection:'GPS Telematics',
+          weather:'Rain', weatherColor:'#1087d2', road:'Wet', roadColor:'#d48000',
+          desc:'28-second coasting on wet road. Reduced engine braking on a slippery descent — safety risk noted alongside the fuel efficiency deduction.' },
+        { type:'Coasting', icon:'➡️', sev:'high', status:'Resolved',
+          driver:'Vasili Koltest', vehicle:'TRK-2287',
+          datetime:'11.11.2025 - 09:30', location:'A6 Highway, KM 22', speed:'69 km/h', duration:'40s', detection:'GPS Telematics',
+          weather:'Clear', weatherColor:'#d48000', road:'Dry', roadColor:'#65b200',
+          desc:'40 seconds of gear-disengaged coasting on the morning run. Score declined — persistent habit on the same route section.' },
+        { type:'Coasting', icon:'➡️', sev:'high', status:'Resolved',
+          driver:'Vasili Koltest', vehicle:'TRK-2287',
+          datetime:'13.11.2025 - 15:00', location:'E67 Highway, KM 90', speed:'71 km/h', duration:'44s', detection:'GPS Telematics',
+          weather:'Clear', weatherColor:'#d48000', road:'Dry', roadColor:'#65b200',
+          desc:'44 seconds of coasting on the afternoon return. Pattern consistent with morning route — elevated speed at gear-disengage.' },
+        { type:'Coasting', icon:'➡️', sev:'medium', status:'Resolved',
+          driver:'Vasili Koltest', vehicle:'TRK-2287',
+          datetime:'15.11.2025 - 07:05', location:'A2 Highway, KM 55', speed:'64 km/h', duration:'34s', detection:'GPS Telematics',
+          weather:'Cloudy', weatherColor:'#797f82', road:'Dry', roadColor:'#65b200',
+          desc:'34-second coasting at start of shift. Marginal improvement on duration but recurring daily occurrence remains.' },
+        { type:'Coasting', icon:'➡️', sev:'high', status:'Resolved',
+          driver:'Vasili Koltest', vehicle:'TRK-2287',
+          datetime:'17.11.2025 - 12:20', location:'E77 Highway, KM 48', speed:'73 km/h', duration:'46s', detection:'GPS Telematics',
+          weather:'Cloudy', weatherColor:'#797f82', road:'Dry', roadColor:'#65b200',
+          desc:'46-second coasting event at high speed. Score dropped to 49% — one of the lower scores before the worst days.' },
+        { type:'Coasting', icon:'➡️', sev:'high', status:'Resolved',
+          driver:'Vasili Koltest', vehicle:'TRK-2287',
+          datetime:'19.11.2025 - 12:15', location:'E67 Highway, KM 110', speed:'74 km/h', duration:'51s', detection:'GPS Telematics',
+          weather:'Rain', weatherColor:'#1087d2', road:'Wet', roadColor:'#d48000',
+          desc:'51-second coasting on wet road. Longest coasting event this month — combined with wet conditions, the risk factor was elevated. Score fell to 46%.' },
+        { type:'Coasting', icon:'➡️', sev:'high', status:'Actioned',
+          driver:'Vasili Koltest', vehicle:'TRK-2287',
+          datetime:'21.11.2025 - 08:30', location:'A1 Highway, KM 38', speed:'75 km/h', duration:'54s', detection:'GPS Telematics',
+          weather:'Partly cloudy', weatherColor:'#797f82', road:'Dry', roadColor:'#65b200',
+          desc:'54-second coasting at 75 km/h — highest single-event duration before the weekly low. Pattern flagged as part of the broader coaching review.' },
+        { type:'Coasting', icon:'➡️', sev:'high', status:'Resolved',
+          driver:'Vasili Koltest', vehicle:'TRK-2287',
+          datetime:'23.11.2025 - 10:00', location:'A2 Highway, KM 66', speed:'76 km/h', duration:'56s', detection:'GPS Telematics',
+          weather:'Clear', weatherColor:'#d48000', road:'Dry', roadColor:'#65b200',
+          desc:'56-second coasting event — second consecutive high-severity day. Score fell to 42%, approaching the monthly low.' },
+        { type:'Coasting', icon:'➡️', sev:'high', status:'Actioned',
+          grouped:true, count:3,
+          driver:'Vasili Koltest', vehicle:'TRK-2287',
+          date:'25.11.2025', timeRange:'07:15 – 16:55', location:'Multiple highways',
+          detection:'GPS Telematics',
+          weather:'Rain', weatherColor:'#1087d2', road:'Wet', roadColor:'#d48000',
+          desc:'Three coasting events across the full shift totalling 2 min 28 sec of gear-disengaged driving. Worst coasting day this month — contributed to the coaching session trigger.',
+          occurrences:[
+            { time:'07:15', sev:'high',   dur:'56s', location:'A1 Highway, KM 44',  hasVideo:false },
+            { time:'12:30', sev:'high',   dur:'52s', location:'E67 Highway, KM 88', hasVideo:false },
+            { time:'16:55', sev:'medium', dur:'40s', location:'A2 Highway, KM 30',  hasVideo:false }
+          ]},
+        { type:'Coasting', icon:'➡️', sev:'high', status:'Resolved',
+          grouped:true, count:2,
+          driver:'Vasili Koltest', vehicle:'TRK-2287',
+          date:'27.11.2025', timeRange:'09:20 – 15:05', location:'Riga region',
+          detection:'GPS Telematics',
+          weather:'Rain', weatherColor:'#1087d2', road:'Wet', roadColor:'#d48000',
+          desc:'Two coasting events on a wet-road day. Score still very low — coaching feedback not yet reflected in gear management behaviour.',
+          occurrences:[
+            { time:'09:20', sev:'high',   dur:'52s', location:'A10 Highway, KM 33', hasVideo:false },
+            { time:'15:05', sev:'medium', dur:'38s', location:'Urban Road, Riga',   hasVideo:false }
+          ]},
+        { type:'Coasting', icon:'➡️', sev:'medium', status:'Resolved',
+          driver:'Vasili Koltest', vehicle:'TRK-2287',
+          datetime:'29.11.2025 - 11:20', location:'A7 Highway, KM 67', speed:'65 km/h', duration:'33s', detection:'GPS Telematics',
+          weather:'Clear', weatherColor:'#d48000', road:'Dry', roadColor:'#65b200',
+          desc:'33-second coasting on dry downhill gradient. Score recovering to 44% following the coaching session — clear improvement from the Nov 25–27 lows.' },
+        { type:'Coasting', icon:'➡️', sev:'medium', status:'Resolved',
+          driver:'Vasili Koltest', vehicle:'TRK-2287',
+          datetime:'30.11.2025 - 08:45', location:'E67 Highway, KM 52', speed:'62 km/h', duration:'29s', detection:'GPS Telematics',
+          weather:'Clear', weatherColor:'#d48000', road:'Dry', roadColor:'#65b200',
+          desc:'29-second coasting event. Continuing improvement — driver applying coaching guidance on gear management. End-of-month score at 48%.' }
+      ]
+    },
+
+    'Harsh Breaking': {
+      scores: [100,100,100,100,99,100,100,100,100,97,100,100,93,96,100,100],
+      events: [
+        null, null, null, null,
+        { type:'Harsh Braking', icon:'⚠️', sev:'low', status:'Resolved',
+          driver:'Vasili Koltest', vehicle:'TRK-2287',
+          datetime:'09.11.2025 - 11:40', location:'Highway A2, KM 88', speed:'72 km/h', duration:'2.1s', detection:'AI Camera',
+          weather:'Rain', weatherColor:'#1087d2', road:'Wet', roadColor:'#d48000',
+          desc:'Single minor braking event on a wet road at a highway merge. Speed reduced from 72 km/h. Well within safe limits — small score deduction only.' },
+        null, null, null, null,
+        { type:'Harsh Braking', icon:'⚠️', sev:'medium', status:'Resolved',
+          driver:'Vasili Koltest', vehicle:'TRK-2287',
+          datetime:'19.11.2025 - 12:40', location:'Urban Road, Riga', speed:'54 km/h', duration:'2.6s', detection:'AI Camera',
+          weather:'Rain', weatherColor:'#1087d2', road:'Wet', roadColor:'#d48000',
+          desc:'Moderate braking in urban traffic on a wet road. Deceleration force of 0.38g — above the 0.30g threshold. Score dropped 3 points from perfect.' },
+        null, null,
+        { type:'Harsh Braking', icon:'⚠️', sev:'medium', status:'Actioned',
+          grouped:true, count:3,
+          driver:'Vasili Koltest', vehicle:'TRK-2287',
+          date:'25.11.2025', timeRange:'08:50 – 15:15', location:'Riga & surroundings',
+          detection:'AI Camera',
+          weather:'Rain', weatherColor:'#1087d2', road:'Wet', roadColor:'#d48000',
+          desc:'Three braking events in a single shift — unusual for this driver who typically scores 100% here. Wet road conditions were a contributing factor. Score fell to 93%.',
+          occurrences:[
+            { time:'08:50', sev:'medium', dur:'2.3s', location:'Roundabout, Jūrmala', hasVideo:true  },
+            { time:'12:30', sev:'medium', dur:'2.8s', location:'A10 Highway, KM 44',  hasVideo:false },
+            { time:'15:15', sev:'low',    dur:'1.9s', location:'Urban Road, Riga',    hasVideo:true  }
+          ]},
+        { type:'Harsh Braking', icon:'⚠️', sev:'low', status:'Resolved',
+          driver:'Vasili Koltest', vehicle:'TRK-2287',
+          datetime:'27.11.2025 - 10:05', location:'A1 Highway, KM 66', speed:'69 km/h', duration:'2.0s', detection:'AI Camera',
+          weather:'Cloudy', weatherColor:'#797f82', road:'Dry', roadColor:'#65b200',
+          desc:'One moderate braking event on the return leg. Score recovering from the Nov 25 low — single event with dry conditions.' },
+        null, null
+      ]
+    },
+
+    'Harsh Acceleration': {
+      scores: [68,72,70,76,72,78,80,72,74,70,66,64,56,58,64,68],
+      events: [
+        { type:'Harsh Acceleration', icon:'⚡', sev:'high', status:'Resolved',
+          driver:'Vasili Koltest', vehicle:'TRK-2287',
+          datetime:'01.11.2025 - 07:55', location:'Depot Exit, Riga', speed:'0 → 58 km/h', duration:'3.2s', detection:'GPS Telematics',
+          weather:'Cloudy', weatherColor:'#797f82', road:'Dry', roadColor:'#65b200',
+          desc:'Sharp acceleration from depot exit — 0 to 58 km/h in 3.2 seconds. Consistent pattern on morning departures.' },
+        { type:'Harsh Acceleration', icon:'⚡', sev:'medium', status:'Resolved',
+          driver:'Vasili Koltest', vehicle:'TRK-2287',
+          datetime:'03.11.2025 - 10:22', location:'Industrial Zone, Salaspils', speed:'0 → 48 km/h', duration:'3.5s', detection:'GPS Telematics',
+          weather:'Clear', weatherColor:'#d48000', road:'Dry', roadColor:'#65b200',
+          desc:'Moderate acceleration from traffic lights — 48 km/h in 3.5 seconds, marginally above threshold for a laden vehicle.' },
+        { type:'Harsh Acceleration', icon:'⚡', sev:'high', status:'Resolved',
+          driver:'Vasili Koltest', vehicle:'TRK-2287',
+          datetime:'05.11.2025 - 13:40', location:'Loading Bay Exit, Jelgava', speed:'0 → 55 km/h', duration:'3.0s', detection:'GPS Telematics',
+          weather:'Cloudy', weatherColor:'#797f82', road:'Dry', roadColor:'#65b200',
+          desc:'High acceleration from loading bay — 55 km/h in 3.0 seconds with a heavy load. Score slightly below the prior day.' },
+        { type:'Harsh Acceleration', icon:'⚡', sev:'low', status:'Resolved',
+          driver:'Vasili Koltest', vehicle:'TRK-2287',
+          datetime:'07.11.2025 - 13:10', location:'Industrial Zone, Salaspils', speed:'0 → 48 km/h', duration:'3.5s', detection:'GPS Telematics',
+          weather:'Clear', weatherColor:'#d48000', road:'Dry', roadColor:'#65b200',
+          desc:'Minor acceleration event — best score this week. Improved approach to junctions and departure points.' },
+        { type:'Harsh Acceleration', icon:'⚡', sev:'medium', status:'Resolved',
+          driver:'Vasili Koltest', vehicle:'TRK-2287',
+          datetime:'09.11.2025 - 08:10', location:'Traffic Lights, Ogre', speed:'0 → 50 km/h', duration:'3.3s', detection:'GPS Telematics',
+          weather:'Rain', weatherColor:'#1087d2', road:'Wet', roadColor:'#d48000',
+          desc:'Acceleration from lights on a wet road — 50 km/h in 3.3 seconds. Rain conditions make this more significant than a dry-road equivalent.' },
+        { type:'Harsh Acceleration', icon:'⚡', sev:'low', status:'Resolved',
+          driver:'Vasili Koltest', vehicle:'TRK-2287',
+          datetime:'11.11.2025 - 09:00', location:'Depot Exit, Ventspils', speed:'0 → 45 km/h', duration:'3.7s', detection:'GPS Telematics',
+          weather:'Clear', weatherColor:'#d48000', road:'Dry', roadColor:'#65b200',
+          desc:'Low-severity departure acceleration. Second-best score of the month — driver adopting smoother takeoff technique.' },
+        { type:'Harsh Acceleration', icon:'⚡', sev:'low', status:'Resolved',
+          driver:'Vasili Koltest', vehicle:'TRK-2287',
+          datetime:'13.11.2025 - 14:30', location:'Roundabout Exit, Riga', speed:'20 → 58 km/h', duration:'4.0s', detection:'GPS Telematics',
+          weather:'Clear', weatherColor:'#d48000', road:'Dry', roadColor:'#65b200',
+          desc:'Best acceleration score of the month. Single low-severity event from roundabout — driver performing well.' },
+        { type:'Harsh Acceleration', icon:'⚡', sev:'medium', status:'Resolved',
+          driver:'Vasili Koltest', vehicle:'TRK-2287',
+          datetime:'15.11.2025 - 06:55', location:'Depot Exit, Riga', speed:'0 → 52 km/h', duration:'3.1s', detection:'GPS Telematics',
+          weather:'Cloudy', weatherColor:'#797f82', road:'Dry', roadColor:'#65b200',
+          desc:'Acceleration event on early morning departure. Score dropped back from the Nov 13 high.' },
+        { type:'Harsh Acceleration', icon:'⚡', sev:'low', status:'Actioned',
+          driver:'Vasili Koltest', vehicle:'TRK-2287',
+          datetime:'17.11.2025 - 07:30', location:'Depot Exit, Ventspils', speed:'0 → 52 km/h', duration:'3.8s', detection:'GPS Telematics',
+          weather:'Cloudy', weatherColor:'#797f82', road:'Dry', roadColor:'#65b200',
+          desc:'Morning departure — rapid acceleration at 52 km/h in 3.8 seconds. A separate excessive idling event the same shift triggered the coaching session.' },
+        { type:'Harsh Acceleration', icon:'⚡', sev:'medium', status:'Resolved',
+          driver:'Vasili Koltest', vehicle:'TRK-2287',
+          datetime:'19.11.2025 - 11:00', location:'Traffic Lights, Salaspils', speed:'0 → 54 km/h', duration:'3.2s', detection:'GPS Telematics',
+          weather:'Rain', weatherColor:'#1087d2', road:'Wet', roadColor:'#d48000',
+          desc:'Harsh takeoff from red lights in wet conditions. Score dipped to 70%.' },
+        { type:'Harsh Acceleration', icon:'⚡', sev:'high', status:'Actioned',
+          driver:'Vasili Koltest', vehicle:'TRK-2287',
+          datetime:'21.11.2025 - 08:00', location:'Loading Bay Exit, Daugavpils', speed:'0 → 60 km/h', duration:'2.9s', detection:'GPS Telematics',
+          weather:'Partly cloudy', weatherColor:'#797f82', road:'Dry', roadColor:'#65b200',
+          desc:'Aggressive departure — 60 km/h in 2.9 seconds with a full load. Score dropped to 66% as part of a generally poor day across multiple metrics.' },
+        { type:'Harsh Acceleration', icon:'⚡', sev:'high', status:'Resolved',
+          driver:'Vasili Koltest', vehicle:'TRK-2287',
+          datetime:'23.11.2025 - 09:45', location:'Depot Exit, Riga', speed:'0 → 62 km/h', duration:'2.8s', detection:'GPS Telematics',
+          weather:'Clear', weatherColor:'#d48000', road:'Dry', roadColor:'#65b200',
+          desc:'High-speed departure from depot — fastest acceleration of the month at 62 km/h in 2.8 seconds. Score approaching monthly low.' },
+        { type:'Harsh Acceleration', icon:'⚡', sev:'high', status:'Actioned',
+          grouped:true, count:3,
+          driver:'Vasili Koltest', vehicle:'TRK-2287',
+          date:'25.11.2025', timeRange:'07:00 – 16:30', location:'Multiple locations',
+          detection:'GPS Telematics',
+          weather:'Rain', weatherColor:'#1087d2', road:'Wet', roadColor:'#d48000',
+          desc:'Three harsh acceleration events across the full shift — worst day for this metric. Combined with other harsh events, a coaching session was assigned.',
+          occurrences:[
+            { time:'07:00', sev:'high',   dur:'2.8s', location:'Depot Exit, Riga',            hasVideo:false },
+            { time:'11:45', sev:'high',   dur:'3.0s', location:'Traffic Lights, Daugavpils', hasVideo:false },
+            { time:'16:30', sev:'medium', dur:'3.3s', location:'Loading Bay, Ventspils',     hasVideo:false }
+          ]},
+        { type:'Harsh Acceleration', icon:'⚡', sev:'high', status:'Resolved',
+          driver:'Vasili Koltest', vehicle:'TRK-2287',
+          datetime:'27.11.2025 - 09:05', location:'Depot Exit, Jūrmala', speed:'0 → 58 km/h', duration:'3.0s', detection:'GPS Telematics',
+          weather:'Cloudy', weatherColor:'#797f82', road:'Dry', roadColor:'#65b200',
+          desc:'Persistent harsh acceleration pattern. Score remained at 58% — coaching feedback not yet reflected in morning departure behaviour.' },
+        { type:'Harsh Acceleration', icon:'⚡', sev:'medium', status:'Resolved',
+          driver:'Vasili Koltest', vehicle:'TRK-2287',
+          datetime:'29.11.2025 - 11:20', location:'Roundabout Exit, Ogre', speed:'20 → 55 km/h', duration:'3.4s', detection:'GPS Telematics',
+          weather:'Clear', weatherColor:'#d48000', road:'Dry', roadColor:'#65b200',
+          desc:'Medium acceleration event. Score recovered to 64% — improvement trend visible after coaching session.' },
+        { type:'Harsh Acceleration', icon:'⚡', sev:'low', status:'Resolved',
+          driver:'Vasili Koltest', vehicle:'TRK-2287',
+          datetime:'30.11.2025 - 08:40', location:'Depot Exit, Riga', speed:'0 → 50 km/h', duration:'3.6s', detection:'GPS Telematics',
+          weather:'Clear', weatherColor:'#d48000', road:'Dry', roadColor:'#65b200',
+          desc:'Minor departure event. Score matched Nov 1 at 68% — full-month cycle with coaching stabilising behaviour at the same level.' }
+      ]
+    },
+
+    'Harsh cornering': {
+      scores: [98,99,98,100,99,100,100,98,100,98,96,94,88,90,96,98],
+      events: [
+        { type:'Harsh cornering', icon:'🔄', sev:'low', status:'Resolved',
+          driver:'Vasili Koltest', vehicle:'TRK-2287',
+          datetime:'01.11.2025 - 10:30', location:'Roundabout, Riga', speed:'32 km/h', duration:'1.2s', detection:'AI Camera',
+          weather:'Cloudy', weatherColor:'#797f82', road:'Dry', roadColor:'#65b200',
+          desc:'Minor cornering event at roundabout — slight lateral movement above threshold. Single low-severity deduction.' },
+        { type:'Harsh cornering', icon:'🔄', sev:'low', status:'Resolved',
+          driver:'Vasili Koltest', vehicle:'TRK-2287',
+          datetime:'03.11.2025 - 14:45', location:'Slip Road, A1 Highway', speed:'36 km/h', duration:'0.9s', detection:'AI Camera',
+          weather:'Clear', weatherColor:'#d48000', road:'Dry', roadColor:'#65b200',
+          desc:'Very minor cornering threshold breach on highway exit ramp. Tiny score deduction only.' },
+        { type:'Harsh cornering', icon:'🔄', sev:'low', status:'Resolved',
+          driver:'Vasili Koltest', vehicle:'TRK-2287',
+          datetime:'05.11.2025 - 09:15', location:'Urban junction, Jelgava', speed:'28 km/h', duration:'1.1s', detection:'AI Camera',
+          weather:'Cloudy', weatherColor:'#797f82', road:'Dry', roadColor:'#65b200',
+          desc:'Brief cornering event at urban junction. Lateral force marginally above threshold on a sharp left turn.' },
+        null,
+        { type:'Harsh cornering', icon:'🔄', sev:'low', status:'Resolved',
+          driver:'Vasili Koltest', vehicle:'TRK-2287',
+          datetime:'09.11.2025 - 12:20', location:'Exit ramp, E67 Highway', speed:'38 km/h', duration:'1.0s', detection:'AI Camera',
+          weather:'Rain', weatherColor:'#1087d2', road:'Wet', roadColor:'#d48000',
+          desc:'Minor cornering event on wet highway exit ramp. Score just below perfect — single low-severity event.' },
+        null, null,
+        { type:'Harsh cornering', icon:'🔄', sev:'low', status:'Resolved',
+          driver:'Vasili Koltest', vehicle:'TRK-2287',
+          datetime:'15.11.2025 - 08:00', location:'Industrial Zone turn, Ventspils', speed:'30 km/h', duration:'1.1s', detection:'AI Camera',
+          weather:'Cloudy', weatherColor:'#797f82', road:'Dry', roadColor:'#65b200',
+          desc:'Low-severity turn at industrial zone entry. Single deduction on an otherwise strong day.' },
+        null,
+        { type:'Harsh cornering', icon:'🔄', sev:'low', status:'Resolved',
+          driver:'Vasili Koltest', vehicle:'TRK-2287',
+          datetime:'19.11.2025 - 13:10', location:'Roundabout, Salaspils', speed:'34 km/h', duration:'1.3s', detection:'AI Camera',
+          weather:'Rain', weatherColor:'#1087d2', road:'Wet', roadColor:'#d48000',
+          desc:'Mild cornering at roundabout in wet conditions. Threshold exceeded by small margin — wet road a contributing factor.' },
+        { type:'Harsh cornering', icon:'🔄', sev:'medium', status:'Resolved',
+          driver:'Vasili Koltest', vehicle:'TRK-2287',
+          datetime:'21.11.2025 - 09:20', location:'E22 Corridor, KM 28', speed:'44 km/h', duration:'1.6s', detection:'AI Camera',
+          weather:'Partly cloudy', weatherColor:'#797f82', road:'Dry', roadColor:'#65b200',
+          desc:'Medium cornering event on the E22 corridor. Score fell to 96% — above normal for this driver but part of a multi-metric poor day.' },
+        { type:'Harsh cornering', icon:'🔄', sev:'medium', status:'Resolved',
+          grouped:true, count:2,
+          driver:'Vasili Koltest', vehicle:'TRK-2287',
+          date:'23.11.2025', timeRange:'09:10 – 15:45', location:'E22 Corridor',
+          detection:'AI Camera',
+          weather:'Clear', weatherColor:'#d48000', road:'Dry', roadColor:'#65b200',
+          desc:'Two cornering events on the same route — lateral movement exceeded limits at both exit ramps on the E22 corridor.',
+          occurrences:[
+            { time:'09:10', sev:'medium', dur:'1.4s', location:'E22 Highway, KM 34', hasVideo:true  },
+            { time:'15:45', sev:'medium', dur:'1.8s', location:'E22 Exit, Jūrmala',  hasVideo:true  }
+          ]},
+        { type:'Harsh cornering', icon:'🔄', sev:'high', status:'Actioned',
+          grouped:true, count:3,
+          driver:'Vasili Koltest', vehicle:'TRK-2287',
+          date:'25.11.2025', timeRange:'08:30 – 16:00', location:'Multiple locations',
+          detection:'AI Camera',
+          weather:'Rain', weatherColor:'#1087d2', road:'Wet', roadColor:'#d48000',
+          desc:'Three harsh cornering events on a wet-road day. Lateral forces significantly above threshold at multiple points. Worst cornering score of the month — part of the day that triggered coaching.',
+          occurrences:[
+            { time:'08:30', sev:'high',   dur:'1.9s', location:'E22 Highway, KM 18', hasVideo:true  },
+            { time:'12:50', sev:'medium', dur:'1.5s', location:'A2 Junction, KM 71', hasVideo:false },
+            { time:'16:00', sev:'medium', dur:'1.6s', location:'Roundabout, Riga',   hasVideo:true  }
+          ]},
+        { type:'Harsh cornering', icon:'🔄', sev:'medium', status:'Resolved',
+          driver:'Vasili Koltest', vehicle:'TRK-2287',
+          datetime:'27.11.2025 - 10:30', location:'Jūrmala Roundabout', speed:'40 km/h', duration:'1.7s', detection:'AI Camera',
+          weather:'Cloudy', weatherColor:'#797f82', road:'Dry', roadColor:'#65b200',
+          desc:'Medium cornering event at Jūrmala roundabout. Score improved from Nov 25 low — driver beginning to show post-coaching adjustment.' },
+        { type:'Harsh cornering', icon:'🔄', sev:'low', status:'Resolved',
+          driver:'Vasili Koltest', vehicle:'TRK-2287',
+          datetime:'29.11.2025 - 12:05', location:'Exit ramp, A7 Highway', speed:'35 km/h', duration:'1.0s', detection:'AI Camera',
+          weather:'Clear', weatherColor:'#d48000', road:'Dry', roadColor:'#65b200',
+          desc:'Minor cornering event on highway exit. Score back to 96% — strong recovery after the Nov 25–27 period.' },
+        { type:'Harsh cornering', icon:'🔄', sev:'low', status:'Resolved',
+          driver:'Vasili Koltest', vehicle:'TRK-2287',
+          datetime:'30.11.2025 - 09:10', location:'Industrial zone, Riga', speed:'30 km/h', duration:'0.9s', detection:'AI Camera',
+          weather:'Clear', weatherColor:'#d48000', road:'Dry', roadColor:'#65b200',
+          desc:'Minor cornering threshold breach. Score almost back to the typical 98–99% range — clear improvement trend after coaching.' }
+      ]
+    },
+
+    'Green RPM': {
+      scores: [100,100,99,100,100,100,100,100,100,98,100,99,95,97,100,100],
+      events: [
+        null, null,
+        { type:'RPM Violation', icon:'⚙️', sev:'low', status:'Resolved',
+          driver:'Vasili Koltest', vehicle:'TRK-2287',
+          datetime:'05.11.2025 - 10:05', location:'A2 Highway, KM 66', speed:'72 km/h', duration:'14s', detection:'GPS Telematics',
+          weather:'Cloudy', weatherColor:'#797f82', road:'Dry', roadColor:'#65b200',
+          desc:'Brief RPM exceedance above the green zone during an acceleration phase. Single short event — minimal impact on the daily score.' },
+        null, null, null, null, null, null,
+        { type:'RPM Violation', icon:'⚙️', sev:'medium', status:'Resolved',
+          driver:'Vasili Koltest', vehicle:'TRK-2287',
+          datetime:'19.11.2025 - 12:30', location:'E67 Highway, KM 88', speed:'78 km/h', duration:'22s', detection:'GPS Telematics',
+          weather:'Rain', weatherColor:'#1087d2', road:'Wet', roadColor:'#d48000',
+          desc:'RPM exceeded 2600 during a sustained uphill segment. Driver maintained higher RPM to sustain speed on the gradient in wet conditions.' },
+        null,
+        { type:'RPM Violation', icon:'⚙️', sev:'low', status:'Resolved',
+          driver:'Vasili Koltest', vehicle:'TRK-2287',
+          datetime:'23.11.2025 - 11:00', location:'E22 Highway, KM 40', speed:'74 km/h', duration:'12s', detection:'GPS Telematics',
+          weather:'Clear', weatherColor:'#d48000', road:'Dry', roadColor:'#65b200',
+          desc:'Momentary RPM spike during lane change and acceleration. Brief green-zone breach with minimal score impact.' },
+        { type:'RPM Violation', icon:'⚙️', sev:'high', status:'Actioned',
+          driver:'Vasili Koltest', vehicle:'TRK-2287',
+          datetime:'25.11.2025 - 08:45', location:'A1 Highway, KM 38', speed:'80 km/h', duration:'44s', detection:'GPS Telematics',
+          weather:'Rain', weatherColor:'#1087d2', road:'Wet', roadColor:'#d48000',
+          desc:'Extended RPM violation on a wet-road uphill segment — 44 seconds above green zone. Worst RPM score of the month, on the day that triggered coaching across multiple metrics.' },
+        { type:'RPM Violation', icon:'⚙️', sev:'medium', status:'Resolved',
+          driver:'Vasili Koltest', vehicle:'TRK-2287',
+          datetime:'27.11.2025 - 10:45', location:'A10 Highway, KM 60', speed:'76 km/h', duration:'28s', detection:'GPS Telematics',
+          weather:'Cloudy', weatherColor:'#797f82', road:'Dry', roadColor:'#65b200',
+          desc:'RPM violation during uphill stretch. Score improving from Nov 25 low — driver managing engine RPM more carefully post-coaching.' },
+        null, null
+      ]
+    },
+
+    'Overspeed': {
+      scores: [90,93,89,94,91,95,96,90,92,88,86,84,78,81,86,90],
+      events: [
+        { type:'Overspeed', icon:'🚨', sev:'medium', status:'Resolved',
+          driver:'Vasili Koltest', vehicle:'TRK-2287',
+          datetime:'01.11.2025 - 09:30', location:'Urban Road, Riga', speed:'68 km/h (limit 50)', duration:'45s', detection:'GPS Telematics',
+          weather:'Cloudy', weatherColor:'#797f82', road:'Dry', roadColor:'#65b200',
+          desc:'Speed of 68 km/h on a 50 km/h urban road for 45 seconds. Score at 90% — typical for city section driving.' },
+        { type:'Overspeed', icon:'🚨', sev:'low', status:'Resolved',
+          driver:'Vasili Koltest', vehicle:'TRK-2287',
+          datetime:'03.11.2025 - 11:50', location:'A1 Highway, KM 50', speed:'93 km/h (limit 90)', duration:'30s', detection:'GPS Telematics',
+          weather:'Clear', weatherColor:'#d48000', road:'Dry', roadColor:'#65b200',
+          desc:'Minor highway speed excess — 93 km/h in a 90 km/h zone for 30 seconds.' },
+        { type:'Overspeed', icon:'🚨', sev:'medium', status:'Resolved',
+          driver:'Vasili Koltest', vehicle:'TRK-2287',
+          datetime:'05.11.2025 - 08:20', location:'Urban Road, Jelgava', speed:'71 km/h (limit 50)', duration:'52s', detection:'GPS Telematics',
+          weather:'Cloudy', weatherColor:'#797f82', road:'Dry', roadColor:'#65b200',
+          desc:'Speed exceeded 50 km/h limit on a residential street for 52 seconds. Small drop from prior day.' },
+        { type:'Overspeed', icon:'🚨', sev:'low', status:'Resolved',
+          driver:'Vasili Koltest', vehicle:'TRK-2287',
+          datetime:'07.11.2025 - 14:20', location:'A2 Highway, KM 80', speed:'94 km/h (limit 90)', duration:'22s', detection:'GPS Telematics',
+          weather:'Clear', weatherColor:'#d48000', road:'Dry', roadColor:'#65b200',
+          desc:'Brief speed excess on highway — 4 km/h above limit for 22 seconds. Best score this week.' },
+        { type:'Overspeed', icon:'🚨', sev:'medium', status:'Resolved',
+          driver:'Vasili Koltest', vehicle:'TRK-2287',
+          datetime:'09.11.2025 - 11:10', location:'Urban Road, Ogre', speed:'66 km/h (limit 50)', duration:'38s', detection:'GPS Telematics',
+          weather:'Rain', weatherColor:'#1087d2', road:'Wet', roadColor:'#d48000',
+          desc:'Speed excess in urban zone in wet conditions — 66 km/h in a 50 km/h limit. Rain increases the safety significance of this event.' },
+        { type:'Overspeed', icon:'🚨', sev:'low', status:'Resolved',
+          driver:'Vasili Koltest', vehicle:'TRK-2287',
+          datetime:'11.11.2025 - 09:15', location:'A6 Highway, KM 18', speed:'92 km/h (limit 90)', duration:'18s', detection:'GPS Telematics',
+          weather:'Clear', weatherColor:'#d48000', road:'Dry', roadColor:'#65b200',
+          desc:'Minimal highway overspeed — 2 km/h above limit for under 20 seconds. Score of 95% — one of the better days.' },
+        { type:'Overspeed', icon:'🚨', sev:'low', status:'Resolved',
+          driver:'Vasili Koltest', vehicle:'TRK-2287',
+          datetime:'13.11.2025 - 15:00', location:'E67 Highway, KM 74', speed:'91 km/h (limit 90)', duration:'15s', detection:'GPS Telematics',
+          weather:'Clear', weatherColor:'#d48000', road:'Dry', roadColor:'#65b200',
+          desc:'Marginal speed excess — barely above limit for 15 seconds. Best score of the first half of the month.' },
+        { type:'Overspeed', icon:'🚨', sev:'medium', status:'Resolved',
+          driver:'Vasili Koltest', vehicle:'TRK-2287',
+          datetime:'15.11.2025 - 07:00', location:'Urban Road, Ventspils', speed:'72 km/h (limit 50)', duration:'48s', detection:'GPS Telematics',
+          weather:'Cloudy', weatherColor:'#797f82', road:'Dry', roadColor:'#65b200',
+          desc:'Urban overspeed on the route to the border checkpoint — 72 km/h in a 50 km/h zone. Score back to 90%.' },
+        { type:'Overspeed', icon:'🚨', sev:'low', status:'Resolved',
+          driver:'Vasili Koltest', vehicle:'TRK-2287',
+          datetime:'17.11.2025 - 07:45', location:'A2 Highway, KM 60', speed:'93 km/h (limit 90)', duration:'28s', detection:'GPS Telematics',
+          weather:'Cloudy', weatherColor:'#797f82', road:'Dry', roadColor:'#65b200',
+          desc:'Minor highway speed excess on morning run — 3 km/h above limit. Small improvement from prior day.' },
+        { type:'Overspeed', icon:'🚨', sev:'medium', status:'Resolved',
+          driver:'Vasili Koltest', vehicle:'TRK-2287',
+          datetime:'19.11.2025 - 12:00', location:'Urban Road, Salaspils', speed:'74 km/h (limit 50)', duration:'55s', detection:'GPS Telematics',
+          weather:'Rain', weatherColor:'#1087d2', road:'Wet', roadColor:'#d48000',
+          desc:'Speed of 74 km/h in a 50 km/h zone in wet conditions. Score dropped to 88% — city driving on a rainy day.' },
+        { type:'Overspeed', icon:'🚨', sev:'high', status:'Actioned',
+          driver:'Vasili Koltest', vehicle:'TRK-2287',
+          datetime:'21.11.2025 - 08:10', location:'Urban Road, Daugavpils', speed:'76 km/h (limit 50)', duration:'62s', detection:'GPS Telematics',
+          weather:'Partly cloudy', weatherColor:'#797f82', road:'Dry', roadColor:'#65b200',
+          desc:'Speed of 76 km/h in a 50 km/h zone for over a minute. Score fell to 86% — part of the multi-metric poor day that triggered coaching.' },
+        { type:'Overspeed', icon:'🚨', sev:'high', status:'Resolved',
+          driver:'Vasili Koltest', vehicle:'TRK-2287',
+          datetime:'23.11.2025 - 10:15', location:'Residential Zone, Riga', speed:'78 km/h (limit 50)', duration:'68s', detection:'GPS Telematics',
+          weather:'Clear', weatherColor:'#d48000', road:'Dry', roadColor:'#65b200',
+          desc:'Highest recorded overspeed event — 78 km/h in a residential 50 zone for 68 seconds. Score 84% and declining.' },
+        { type:'Overspeed', icon:'🚨', sev:'high', status:'Actioned',
+          grouped:true, count:2,
+          driver:'Vasili Koltest', vehicle:'TRK-2287',
+          date:'25.11.2025', timeRange:'07:30 – 16:45', location:'Urban areas, Riga & Daugavpils',
+          detection:'GPS Telematics',
+          weather:'Rain', weatherColor:'#1087d2', road:'Wet', roadColor:'#d48000',
+          desc:'Two overspeed events in urban zones on a wet-road day — worst overspeed score of the month. Combined with other violations, this day triggered the coaching session.',
+          occurrences:[
+            { time:'07:30', sev:'high', dur:'70s', location:'Residential Zone, Daugavpils', hasVideo:false },
+            { time:'16:45', sev:'high', dur:'58s', location:'Urban Road, Riga',             hasVideo:false }
+          ]},
+        { type:'Overspeed', icon:'🚨', sev:'high', status:'Resolved',
+          driver:'Vasili Koltest', vehicle:'TRK-2287',
+          datetime:'27.11.2025 - 10:20', location:'Residential Zone, Riga', speed:'75 km/h (limit 50)', duration:'60s', detection:'GPS Telematics',
+          weather:'Cloudy', weatherColor:'#797f82', road:'Dry', roadColor:'#65b200',
+          desc:'Urban overspeed event — slight improvement from Nov 25. Score recovering toward mid-80s.' },
+        { type:'Overspeed', icon:'🚨', sev:'medium', status:'Resolved',
+          driver:'Vasili Koltest', vehicle:'TRK-2287',
+          datetime:'29.11.2025 - 11:45', location:'Urban Road, Ogre', speed:'68 km/h (limit 50)', duration:'42s', detection:'GPS Telematics',
+          weather:'Clear', weatherColor:'#d48000', road:'Dry', roadColor:'#65b200',
+          desc:'Medium urban overspeed. Score improving to 86% — coaching effect visible in reduced speed excess.' },
+        { type:'Overspeed', icon:'🚨', sev:'low', status:'Resolved',
+          driver:'Vasili Koltest', vehicle:'TRK-2287',
+          datetime:'30.11.2025 - 08:50', location:'A1 Highway, KM 22', speed:'93 km/h (limit 90)', duration:'20s', detection:'GPS Telematics',
+          weather:'Clear', weatherColor:'#d48000', road:'Dry', roadColor:'#65b200',
+          desc:'Minor highway speed excess. Score recovered to 90% — significant improvement from the Nov 25 low of 78%.' }
+      ]
+    },
+
+    'Over revving engine': {
+      scores: [100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100],
+      events: [null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null]
+    }
+  };
+
+  function initChartLine() {
+    var svg = document.getElementById('chart-svg');
+    if (!svg) return;
+    var rect = svg.getBoundingClientRect();
+    var w = rect.width, h = rect.height;
+    if (!w || !h) return;
+    var pts = CHART_SCORES.map(function(s, i) {
+      return (i / 15 * w).toFixed(1) + ',' + ((100 - s) / 100 * h).toFixed(1);
+    }).join(' ');
+    var line = document.getElementById('chart-line');
+    if (line) line.setAttribute('points', pts);
+  }
+  setTimeout(initChartLine, 0);
+  window.addEventListener('resize', initChartLine);
+
+  function updateChartForMetric(name) {
+    var data = METRIC_DATA[name];
+    if (!data) return;
+    activeMetricName = name;
+    CHART_SCORES = data.scores.slice();
+    CHART_EVENTS = data.events.slice();
+    var color = METRIC_COLORS[name] || '#ffb300';
+    for (var i = 0; i < 16; i++) {
+      var dot = document.getElementById('chart-dot-' + i);
+      if (dot) {
+        dot.setAttribute('cy', (100 - CHART_SCORES[i]) + '%');
+        dot.setAttribute('fill', color);
+      }
+    }
+    var svg = document.getElementById('chart-svg');
+    if (svg) {
+      var rect = svg.getBoundingClientRect();
+      var w = rect.width, h = rect.height;
+      var pts = CHART_SCORES.map(function(s, i) {
+        return (i / 15 * w).toFixed(1) + ',' + ((100 - s) / 100 * h).toFixed(1);
+      }).join(' ');
+      var line = document.getElementById('chart-line');
+      if (line) {
+        line.setAttribute('points', pts);
+        line.setAttribute('stroke', color);
+      }
+    }
+    closeChartEvent();
+  }
+
+  function csevColor(s){ return s==='critical'?'#f23e44':s==='high'?'#c88000':s==='medium'?'#a86000':'#4a8fcc'; }
+  function csevBg(s)   { return s==='critical'?'#fff0f0':s==='high'?'#fff8e6':s==='medium'?'#fffbe6':'#e8f0fc'; }
+  function csevBorder(s){ return s==='critical'?'#f8c0c2':s==='high'?'#ffe080':s==='medium'?'#ffe8a0':'#b0ccf0'; }
+  function chealth(h)  { return h>=75?'#65b200':h>=50?'#d48000':'#f23e44'; }
+  function cscore(sc)  { return sc>=65?'#65b200':sc>=40?'#d48000':'#f23e44'; }
+
+  function openChartEvent(idx) {
+    var panel = document.getElementById('chart-event-panel');
+    panel.innerHTML = buildChartEventHTML(idx);
+    panel.style.display = 'block';
+    panel.scrollTop = 0;
+  }
+
+  function closeChartEvent() {
+    document.getElementById('chart-event-panel').style.display = 'none';
+  }
+
+  function buildChartGroupedEventHTML(ev) {
+    var dr  = CHART_DRIVERS[ev.driver]   || {};
+    var veh = CHART_VEHICLES[ev.vehicle] || {};
+    var hc  = chealth(veh.health || 0);
+    var sc  = cscore(dr.score   || 0);
+    var sevLabel = ev.sev.charAt(0).toUpperCase() + ev.sev.slice(1);
+    var sevOrder = {critical:4,high:3,medium:2,low:1};
+    var peakSev  = ev.occurrences.reduce(function(b,o){ return (sevOrder[o.sev]||0)>(sevOrder[b]||0)?o.sev:b; }, 'low');
+
+    // Media strip
+    var mediaItems = ev.occurrences.filter(function(o){ return o.hasVideo; });
+    var mediaHTML = '';
+    if (mediaItems.length) {
+      var thumbs = mediaItems.map(function(o){
+        return '<div style="width:88px;height:56px;background:#141824;border-radius:6px;display:inline-flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;margin-right:8px;flex-shrink:0;cursor:pointer;">'
+          + '<svg width="14" height="16" viewBox="0 0 14 16" fill="none"><path d="M2 1l11 7L2 15V1z" fill="rgba(255,255,255,.7)"/></svg>'
+          + '<span style="font-size:10px;color:rgba(255,255,255,.5);">' + o.time + '</span>'
+          + '</div>';
+      }).join('');
+      mediaHTML = '<div class="detail-card">'
+        + '<div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;">'
+          + '<div class="detail-card-title" style="margin-bottom:0;">Media</div>'
+          + '<span style="font-size:12px;color:#797f82;">' + mediaItems.length + ' clip' + (mediaItems.length !== 1 ? 's' : '') + '</span>'
+        + '</div>'
+        + '<div style="display:flex;overflow-x:auto;padding-bottom:2px;">' + thumbs + '</div>'
+        + '</div>';
+    }
+
+    // Occurrence rows
+    var occRows = ev.occurrences.map(function(o, i){
+      var mediaIcon = o.hasVideo
+        ? '<span class="detail-occ-media">▶ Video</span>'
+        : '';
+      return '<div class="detail-occurrence-row">'
+        + '<span class="detail-occ-index">' + (i+1) + '</span>'
+        + '<span class="detail-occ-time">' + o.time + '</span>'
+        + '<span class="pill" style="font-size:10px;padding:1px 7px;background:' + csevBg(o.sev) + ';color:' + csevColor(o.sev) + ';border:1px solid ' + csevBorder(o.sev) + ';">' + o.sev.charAt(0).toUpperCase()+o.sev.slice(1) + '</span>'
+        + '<span class="detail-occ-dur">' + o.dur + '</span>'
+        + (o.location ? '<span class="detail-occ-loc">' + o.location + '</span>' : '<span class="detail-occ-loc"></span>')
+        + mediaIcon
+        + '</div>';
+    }).join('');
+
+    return ''
+      + '<div class="detail-header-bar">'
+        + '<button class="detail-back-btn" onclick="closeChartEvent()">'
+          + '<svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M9 2L4 7l5 5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg> Back'
+        + '</button>'
+        + '<span style="font-size:20px;line-height:1;">' + ev.icon + '</span>'
+        + '<span class="detail-type-name">' + ev.type + '</span>'
+        + '<span style="font-size:15px;font-weight:700;color:#384045;background:#ededee;border-radius:6px;padding:3px 9px;">×' + ev.count + '</span>'
+        + '<span class="pill" style="background:' + csevBg(ev.sev) + ';color:' + csevColor(ev.sev) + ';border:1px solid ' + csevBorder(ev.sev) + ';">' + sevLabel + '</span>'
+        + '<span class="detail-status-label">' + ev.status + '</span>'
+      + '</div>'
+      + '<div class="detail-body">'
+        + '<div class="detail-left">'
+          // Stats grid
+          + '<div class="detail-stats-grid">'
+            + '<div class="detail-stat-box"><div class="detail-stat-label">Occurrences</div><div class="detail-stat-val">' + ev.count + '</div><div class="detail-stat-sub">' + ev.date + '</div></div>'
+            + '<div class="detail-stat-box"><div class="detail-stat-label">Time range</div><div class="detail-stat-val" style="font-size:15px;padding-top:3px;">' + ev.timeRange + '</div><div class="detail-stat-sub">Total window</div></div>'
+            + '<div class="detail-stat-box"><div class="detail-stat-label">Peak severity</div><div class="detail-stat-val" style="font-size:15px;color:' + csevColor(peakSev) + ';">' + peakSev.charAt(0).toUpperCase()+peakSev.slice(1) + '</div></div>'
+            + '<div class="detail-stat-box"><div class="detail-stat-label">Detection</div><div class="detail-stat-val" style="font-size:13px;padding-top:4px;">' + ev.detection + '</div></div>'
+          + '</div>'
+          // Media
+          + mediaHTML
+          // Occurrence timeline
+          + '<div class="detail-card">'
+            + '<div class="detail-card-title" style="margin-bottom:12px;">' + ev.count + ' occurrences</div>'
+            + '<div class="detail-occurrence-list">' + occRows + '</div>'
+          + '</div>'
+          // Description
+          + '<div class="detail-card">'
+            + '<div class="detail-card-title">Description</div>'
+            + '<p style="font-size:14px;color:#384045;line-height:1.65;">' + ev.desc + '</p>'
+          + '</div>'
+          // Driver Report
+          + (ev.driverReport
+            ? '<div class="detail-card">'
+                + '<div class="detail-card-title">Driver Report</div>'
+                + '<div class="detail-report-meta">'
+                  + '<div class="detail-report-av">' + (dr.initials||'?') + '</div>'
+                  + '<div><div class="detail-report-by">' + ev.driver + '</div><div class="detail-report-date">Submitted ' + ev.driverReport.date + '</div></div>'
+                  + '<span class="detail-report-submitted">Submitted</span>'
+                + '</div>'
+                + '<div class="detail-report-text">' + ev.driverReport.text + '</div>'
+              + '</div>'
+            : '')
+          // Context
+          + '<div class="detail-context-row">'
+            + '<div class="detail-ctx-card"><div class="detail-ctx-label"><svg width="13" height="13" viewBox="0 0 13 13" fill="none"><path d="M2 9c.5-1 1.5-2 2.5-2s1.5 1.5 2.5 1.5S8.5 7 9.5 6 11 4.5 12 4.5" stroke="#797f82" stroke-width="1.1" stroke-linecap="round"/></svg>Weather</div><div class="detail-ctx-value" style="color:' + ev.weatherColor + ';">' + ev.weather + '</div></div>'
+            + '<div class="detail-ctx-card"><div class="detail-ctx-label"><svg width="13" height="13" viewBox="0 0 13 13" fill="none"><path d="M1 9c1-2 2-3 3-3s2 2 3 2 2-2 3-3" stroke="#797f82" stroke-width="1.1" stroke-linecap="round"/></svg>Road</div><div class="detail-ctx-value" style="color:' + ev.roadColor + ';">' + ev.road + '</div></div>'
+            + '<div class="detail-ctx-card"><div class="detail-ctx-label"><svg width="13" height="13" viewBox="0 0 13 13" fill="none"><path d="M5 2l1.5 1L8 2M9 2l2.5 2v4l-2.5 2-1.5-1-1.5 1L1.5 8V4L4 2z" stroke="#797f82" stroke-width="1.1" stroke-linejoin="round"/></svg>Vehicle Health</div><div class="detail-ctx-value" style="color:' + hc + ';">' + (veh.health||'—') + '%</div></div>'
+            + '<div class="detail-ctx-card"><div class="detail-ctx-label"><svg width="13" height="13" viewBox="0 0 13 13" fill="none"><path d="M6.5 1l1.4 3.2H11l-2.6 1.9 1 3.2-2.9-2.1L3.6 9.3l1-3.2L2 4.2h3.1z" stroke="#797f82" stroke-width="1.1" stroke-linejoin="round"/></svg>Driver Score</div><div class="detail-ctx-value" style="color:' + sc + ';">' + (dr.score||'—') + '</div></div>'
+          + '</div>'
+        + '</div>'
+        + '<div class="detail-right">'
+          + '<div class="detail-card">'
+            + '<div class="detail-card-title">Actions</div>'
+            + '<button class="detail-action-btn primary" onclick="window.location.href=\'index.html\'">'
+              + '<svg width="15" height="15" viewBox="0 0 15 15" fill="none"><path d="M2 8h11M8 3l5 5-5 5" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg>View in Event Management'
+            + '</button>'
+            + '<button class="detail-action-btn secondary" onclick="closeChartEvent()">'
+              + '<svg width="15" height="15" viewBox="0 0 15 15" fill="none"><path d="M9 3L4 7.5l5 4.5" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg>Back to Coaching'
+            + '</button>'
+          + '</div>'
+          + '<div class="detail-card">'
+            + '<div class="detail-card-title">Event Details</div>'
+            + '<div class="detail-field-row"><span class="detail-field-label">Driver</span><span class="detail-field-val green">' + ev.driver + '</span></div>'
+            + '<div class="detail-field-row"><span class="detail-field-label">Vehicle</span><span class="detail-field-val green">' + ev.vehicle + ' ' + (veh.model||'') + '</span></div>'
+            + '<div class="detail-field-row"><span class="detail-field-label">Date</span><span class="detail-field-val">' + ev.date + '</span></div>'
+            + '<div class="detail-field-row"><span class="detail-field-label">Time range</span><span class="detail-field-val">' + ev.timeRange + '</span></div>'
+            + '<div class="detail-field-row"><span class="detail-field-label">Location</span><span class="detail-field-val">' + ev.location + '</span></div>'
+            + '<div class="detail-field-row"><span class="detail-field-label">Detection</span><span class="detail-field-val">' + ev.detection + '</span></div>'
+          + '</div>'
+          + '<div class="detail-driver-card">'
+            + '<div class="driver-av">' + (dr.initials||'?') + '</div>'
+            + '<div style="flex:1;"><div class="detail-dname">' + ev.driver + '</div><div class="detail-devts">' + (dr.events||0) + ' events this month</div></div>'
+            + '<div class="detail-dscore" style="color:' + sc + ';border-color:' + sc + ';">' + (dr.score||'—') + '</div>'
+          + '</div>'
+          + '<div class="detail-vehicle-card">'
+            + '<div class="detail-vh-header"><svg width="22" height="16" viewBox="0 0 22 16" fill="none"><rect x="1" y="4" width="14" height="9" rx="1.5" stroke="#65b200" stroke-width="1.4"/><path d="M4 4V3a2 2 0 012-2h5a2 2 0 012 2v1" stroke="#65b200" stroke-width="1.4"/><circle cx="5" cy="13" r="2" stroke="#65b200" stroke-width="1.3"/><circle cx="12" cy="13" r="2" stroke="#65b200" stroke-width="1.3"/><path d="M15 8h5l1 5h-6" stroke="#65b200" stroke-width="1.4" stroke-linejoin="round"/></svg><span class="detail-vh-name">' + ev.vehicle + ' ' + (veh.model||'') + '</span></div>'
+            + '<div class="detail-health-row"><span class="detail-health-lbl">Health</span><span class="detail-health-pct" style="color:' + hc + ';">' + (veh.health||0) + '%</span></div>'
+            + '<div class="detail-health-bar"><div class="detail-health-fill" style="width:' + (veh.health||0) + '%;background:' + hc + ';"></div></div>'
+          + '</div>'
+        + '</div>'
+      + '</div>';
+  }
+
+  function buildChartEventHTML(idx) {
+    var ev    = CHART_EVENTS[idx];
+    var date  = CHART_DATES[idx] || ('Point ' + idx);
+    var score = CHART_SCORES[idx] || '—';
+
+    if (ev && ev.grouped) return buildChartGroupedEventHTML(ev);
+
+    if (!ev) {
+      return '<div class="detail-header-bar">'
+        + '<button class="detail-back-btn" onclick="closeChartEvent()">'
+          + '<svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M9 2L4 7l5 5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg> Back'
+        + '</button>'
+        + '<span class="detail-type-name">' + date + '</span>'
+      + '</div>'
+      + '<div style="padding:80px 28px;display:flex;flex-direction:column;align-items:center;gap:16px;">'
+        + '<div style="font-size:18px;font-weight:600;color:#384045;">No event data for ' + date + '</div>'
+        + '<div style="font-size:14px;color:#797f82;">Score: <strong style="color:#384045;">' + score + '%</strong></div>'
+      + '</div>';
+    }
+
+    var dr  = CHART_DRIVERS[ev.driver]   || {};
+    var veh = CHART_VEHICLES[ev.vehicle] || {};
+    var hc  = chealth(veh.health || 0);
+    var sc  = cscore(dr.score   || 0);
+    var sevLabel = ev.sev.charAt(0).toUpperCase() + ev.sev.slice(1);
+
+    return ''
+      + '<div class="detail-header-bar">'
+        + '<button class="detail-back-btn" onclick="closeChartEvent()">'
+          + '<svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M9 2L4 7l5 5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg> Back'
+        + '</button>'
+        + '<span style="font-size:20px;line-height:1;">' + ev.icon + '</span>'
+        + '<span class="detail-type-name">' + ev.type + '</span>'
+        + '<span class="pill" style="background:' + csevBg(ev.sev) + ';color:' + csevColor(ev.sev) + ';border:1px solid ' + csevBorder(ev.sev) + ';">' + sevLabel + '</span>'
+        + '<span class="detail-status-label">' + ev.status + '</span>'
+      + '</div>'
+      + '<div class="detail-body">'
+        + '<div class="detail-left">'
+          // Video placeholder
+          + '<div class="detail-card" style="padding:0;">'
+            + '<div class="detail-no-video-area">'
+              + '<svg width="52" height="44" viewBox="0 0 52 44" fill="none"><rect x="2" y="8" width="32" height="24" rx="3" stroke="currentColor" stroke-width="2"/><path d="M34 18l14-8v24l-14-8V18z" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/><line x1="1" y1="1" x2="51" y2="43" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>'
+              + '<span>No camera footage available</span>'
+            + '</div>'
+          + '</div>'
+          // Location
+          + '<div class="detail-card">'
+            + '<div class="detail-card-title">Location</div>'
+            + '<div class="detail-mini-map">'
+              + '<svg width="100%" height="100%" style="position:absolute;inset:0;pointer-events:none;" preserveAspectRatio="none"><rect width="100%" height="100%" fill="#eaf4da"/><rect x="0" y="43%" width="100%" height="13%" fill="#f4f1ea" opacity=".9"/><rect x="43%" y="0" width="13%" height="100%" fill="#f4f1ea" opacity=".9"/><line x1="0" y1="49.5%" x2="100%" y2="49.5%" stroke="#d8d4c8" stroke-width="1" stroke-dasharray="16,10"/><line x1="49.5%" y1="0" x2="49.5%" y2="100%" stroke="#d8d4c8" stroke-width="1" stroke-dasharray="16,10"/></svg>'
+              + '<div class="detail-map-dot"></div>'
+              + '<div class="detail-map-badge" style="bottom:12px;left:12px;">'
+                + '<svg width="11" height="13" viewBox="0 0 11 13" fill="none"><path d="M5.5 1a4 4 0 014 4c0 2.5-4 7.5-4 7.5S1.5 7.5 1.5 5a4 4 0 014-4z" stroke="#f23e44" stroke-width="1.2"/><circle cx="5.5" cy="5" r="1.3" fill="#f23e44"/></svg>'
+                + ev.location
+              + '</div>'
+            + '</div>'
+          + '</div>'
+          // Description
+          + '<div class="detail-card">'
+            + '<div class="detail-card-title">Description</div>'
+            + '<p style="font-size:14px;color:#384045;line-height:1.65;">' + ev.desc + '</p>'
+          + '</div>'
+          // Driver Report
+          + '<div class="detail-card">'
+            + '<div class="detail-card-title">Driver Report</div>'
+            + (ev.driverReport
+              ? '<div class="detail-report-meta">'
+                  + '<div class="detail-report-av">' + (dr.initials||'?') + '</div>'
+                  + '<div><div class="detail-report-by">' + ev.driver + '</div><div class="detail-report-date">Submitted ' + ev.driverReport.date + '</div></div>'
+                  + '<span class="detail-report-submitted">Submitted</span>'
+                + '</div>'
+                + '<div class="detail-report-text">' + ev.driverReport.text + '</div>'
+              : '<div class="detail-report-empty">'
+                  + '<svg width="36" height="36" viewBox="0 0 36 36" fill="none"><rect x="6" y="4" width="24" height="28" rx="3" stroke="#d0d4d8" stroke-width="1.8"/><path d="M12 13h12M12 18h12M12 23h7" stroke="#d0d4d8" stroke-width="1.8" stroke-linecap="round"/></svg>'
+                  + '<p>No report submitted by the driver yet.</p>'
+                + '</div>')
+          + '</div>'
+          // Context
+          + '<div class="detail-context-row">'
+            + '<div class="detail-ctx-card"><div class="detail-ctx-label"><svg width="13" height="13" viewBox="0 0 13 13" fill="none"><path d="M2 9c.5-1 1.5-2 2.5-2s1.5 1.5 2.5 1.5S8.5 7 9.5 6 11 4.5 12 4.5" stroke="#797f82" stroke-width="1.1" stroke-linecap="round"/></svg>Weather</div><div class="detail-ctx-value" style="color:' + ev.weatherColor + ';">' + ev.weather + '</div></div>'
+            + '<div class="detail-ctx-card"><div class="detail-ctx-label"><svg width="13" height="13" viewBox="0 0 13 13" fill="none"><path d="M1 9c1-2 2-3 3-3s2 2 3 2 2-2 3-3" stroke="#797f82" stroke-width="1.1" stroke-linecap="round"/></svg>Road</div><div class="detail-ctx-value" style="color:' + ev.roadColor + ';">' + ev.road + '</div></div>'
+            + '<div class="detail-ctx-card"><div class="detail-ctx-label"><svg width="13" height="13" viewBox="0 0 13 13" fill="none"><path d="M5 2l1.5 1L8 2M9 2l2.5 2v4l-2.5 2-1.5-1-1.5 1L1.5 8V4L4 2z" stroke="#797f82" stroke-width="1.1" stroke-linejoin="round"/></svg>Vehicle Health</div><div class="detail-ctx-value" style="color:' + hc + ';">' + (veh.health||'—') + '%</div></div>'
+            + '<div class="detail-ctx-card"><div class="detail-ctx-label"><svg width="13" height="13" viewBox="0 0 13 13" fill="none"><path d="M6.5 1l1.4 3.2H11l-2.6 1.9 1 3.2-2.9-2.1L3.6 9.3l1-3.2L2 4.2h3.1z" stroke="#797f82" stroke-width="1.1" stroke-linejoin="round"/></svg>Driver Score</div><div class="detail-ctx-value" style="color:' + sc + ';">' + (dr.score||'—') + '</div></div>'
+          + '</div>'
+        + '</div>'
+        + '<div class="detail-right">'
+          // Actions
+          + '<div class="detail-card">'
+            + '<div class="detail-card-title">Actions</div>'
+            + '<button class="detail-action-btn primary" onclick="window.location.href=\'index.html\'">'
+              + '<svg width="15" height="15" viewBox="0 0 15 15" fill="none"><path d="M2 8h11M8 3l5 5-5 5" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg>'
+              + 'View in Event Management'
+            + '</button>'
+            + '<button class="detail-action-btn secondary" onclick="closeChartEvent()">'
+              + '<svg width="15" height="15" viewBox="0 0 15 15" fill="none"><path d="M9 3L4 7.5l5 4.5" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg>'
+              + 'Back to Coaching'
+            + '</button>'
+          + '</div>'
+          // Event Details
+          + '<div class="detail-card">'
+            + '<div class="detail-card-title">Event Details</div>'
+            + '<div class="detail-field-row"><span class="detail-field-label">Driver</span><span class="detail-field-val green">' + ev.driver + '</span></div>'
+            + '<div class="detail-field-row"><span class="detail-field-label">Vehicle</span><span class="detail-field-val green">' + ev.vehicle + ' ' + (veh.model||'') + '</span></div>'
+            + '<div class="detail-field-row"><span class="detail-field-label">Date &amp; Time</span><span class="detail-field-val">' + ev.datetime + '</span></div>'
+            + '<div class="detail-field-row"><span class="detail-field-label">Location</span><span class="detail-field-val">' + ev.location + '</span></div>'
+            + '<div class="detail-field-row"><span class="detail-field-label">Speed</span><span class="detail-field-val">' + ev.speed + '</span></div>'
+            + '<div class="detail-field-row"><span class="detail-field-label">Duration</span><span class="detail-field-val">' + ev.duration + '</span></div>'
+            + '<div class="detail-field-row"><span class="detail-field-label">Detection</span><span class="detail-field-val">' + ev.detection + '</span></div>'
+          + '</div>'
+          // Driver card
+          + '<div class="detail-driver-card">'
+            + '<div class="driver-av">' + (dr.initials||'?') + '</div>'
+            + '<div style="flex:1;"><div class="detail-dname">' + ev.driver + '</div><div class="detail-devts">' + (dr.events||0) + ' events this month</div></div>'
+            + '<div class="detail-dscore" style="color:' + sc + ';border-color:' + sc + ';">' + (dr.score||'—') + '</div>'
+          + '</div>'
+          // Vehicle card
+          + '<div class="detail-vehicle-card">'
+            + '<div class="detail-vh-header"><svg width="22" height="16" viewBox="0 0 22 16" fill="none"><rect x="1" y="4" width="14" height="9" rx="1.5" stroke="#65b200" stroke-width="1.4"/><path d="M4 4V3a2 2 0 012-2h5a2 2 0 012 2v1" stroke="#65b200" stroke-width="1.4"/><circle cx="5" cy="13" r="2" stroke="#65b200" stroke-width="1.3"/><circle cx="12" cy="13" r="2" stroke="#65b200" stroke-width="1.3"/><path d="M15 8h5l1 5h-6" stroke="#65b200" stroke-width="1.4" stroke-linejoin="round"/></svg><span class="detail-vh-name">' + ev.vehicle + ' ' + (veh.model||'') + '</span></div>'
+            + '<div class="detail-health-row"><span class="detail-health-lbl">Health</span><span class="detail-health-pct" style="color:' + hc + ';">' + (veh.health||0) + '%</span></div>'
+            + '<div class="detail-health-bar"><div class="detail-health-fill" style="width:' + (veh.health||0) + '%;background:' + hc + ';"></div></div>'
+          + '</div>'
+        + '</div>'
+      + '</div>';
+  }
+
+  // ── Snackbar ──
+  var snackbarTimer = null;
+  function showSnackbar(msg, linkText, linkHref) {
+    var el     = document.getElementById('snackbar');
+    var msgEl  = document.getElementById('snackbar-msg');
+    var linkEl = document.getElementById('snackbar-link');
+    msgEl.textContent  = msg;
+    linkEl.textContent = linkText;
+    linkEl.href        = linkHref;
+    linkEl.style.display = linkText ? '' : 'none';
+    el.classList.add('visible');
+    clearTimeout(snackbarTimer);
+    snackbarTimer = setTimeout(dismissSnackbar, 7000);
+  }
+  function dismissSnackbar() {
+    document.getElementById('snackbar').classList.remove('visible');
+  }
+</script>
+
+<!-- ── Chart Event Panel ── -->
+<div id="chart-event-panel" class="chart-event-panel"></div>
+
+<!-- ── Snackbar ── -->
+<div id="snackbar" class="snackbar">
+  <div class="snackbar-icon">✓</div>
+  <div class="snackbar-body">
+    <div class="snackbar-msg" id="snackbar-msg"></div>
+    <a id="snackbar-link" class="snackbar-link" href="#"></a>
+  </div>
+  <button class="snackbar-close" onclick="dismissSnackbar()">×</button>
+</div>
+
+</body>
+</html>
