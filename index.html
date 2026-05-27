@@ -7,6 +7,8 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 <style>
   * { box-sizing: border-box; margin: 0; padding: 0; }
   body { font-family: 'Inter', sans-serif; background: #f4f4f4; color: #384045; font-size: 14px; }
@@ -1659,156 +1661,8 @@
 
     <!-- Map canvas -->
     <div class="map-canvas">
-
-      <!-- Map tile background (SVG roads) -->
-      <svg xmlns="http://www.w3.org/2000/svg" width="100%" height="100%" style="position:absolute;inset:0;pointer-events:none;">
-        <rect width="100%" height="100%" fill="#e8ead3"/>
-        <!-- Parks -->
-        <rect x="3%" y="3%" width="13%" height="17%" fill="#c8d48a" rx="4"/>
-        <rect x="54%" y="56%" width="14%" height="12%" fill="#c8d48a" rx="4"/>
-        <rect x="73%" y="21%" width="11%" height="19%" fill="#c8d48a" rx="4"/>
-        <rect x="28%" y="79%" width="10%" height="13%" fill="#c8d48a" rx="3"/>
-        <!-- Urban blocks -->
-        <rect x="20%" y="2%" width="19%" height="18%" fill="#dedad4"/>
-        <rect x="44%" y="2%" width="27%" height="18%" fill="#d8d4cc"/>
-        <rect x="2%" y="27%" width="13%" height="19%" fill="#dedad4"/>
-        <rect x="20%" y="27%" width="19%" height="19%" fill="#d4d0c8"/>
-        <rect x="44%" y="27%" width="27%" height="19%" fill="#dedad4"/>
-        <rect x="87%" y="27%" width="12%" height="19%" fill="#d8d4cc"/>
-        <rect x="2%" y="53%" width="13%" height="19%" fill="#d8d4cc"/>
-        <rect x="20%" y="53%" width="19%" height="19%" fill="#dedad4"/>
-        <rect x="44%" y="53%" width="27%" height="19%" fill="#d4d0c8"/>
-        <rect x="87%" y="53%" width="12%" height="19%" fill="#dedad4"/>
-        <rect x="2%" y="79%" width="24%" height="20%" fill="#dedad4"/>
-        <rect x="44%" y="79%" width="27%" height="21%" fill="#d8d4cc"/>
-        <rect x="87%" y="79%" width="12%" height="21%" fill="#dedad4"/>
-        <!-- Major horizontal roads -->
-        <rect x="0" y="22%" width="100%" height="4%" fill="#f4f2ea"/>
-        <rect x="0" y="48%" width="100%" height="4%" fill="#f4f2ea"/>
-        <rect x="0" y="74%" width="100%" height="4%" fill="#f4f2ea"/>
-        <!-- Major vertical roads -->
-        <rect x="17%" y="0" width="3%" height="100%" fill="#f4f2ea"/>
-        <rect x="41%" y="0" width="3%" height="100%" fill="#f4f2ea"/>
-        <rect x="67%" y="0" width="3%" height="100%" fill="#f4f2ea"/>
-        <rect x="86%" y="0" width="3%" height="100%" fill="#f4f2ea"/>
-        <!-- Center dashed lines -->
-        <line x1="0" y1="24%" x2="100%" y2="24%" stroke="#d8d4c8" stroke-width="0.8" stroke-dasharray="18,12"/>
-        <line x1="0" y1="50%" x2="100%" y2="50%" stroke="#d8d4c8" stroke-width="0.8" stroke-dasharray="18,12"/>
-        <line x1="0" y1="76%" x2="100%" y2="76%" stroke="#d8d4c8" stroke-width="0.8" stroke-dasharray="18,12"/>
-        <line x1="18.5%" y1="0" x2="18.5%" y2="100%" stroke="#d8d4c8" stroke-width="0.8" stroke-dasharray="18,12"/>
-        <line x1="42.5%" y1="0" x2="42.5%" y2="100%" stroke="#d8d4c8" stroke-width="0.8" stroke-dasharray="18,12"/>
-        <line x1="68.5%" y1="0" x2="68.5%" y2="100%" stroke="#d8d4c8" stroke-width="0.8" stroke-dasharray="18,12"/>
-        <line x1="87.5%" y1="0" x2="87.5%" y2="100%" stroke="#d8d4c8" stroke-width="0.8" stroke-dasharray="18,12"/>
-        <!-- Minor roads -->
-        <line x1="0" y1="11%" x2="100%" y2="11%" stroke="#dedad2" stroke-width="1.5"/>
-        <line x1="0" y1="36%" x2="100%" y2="36%" stroke="#dedad2" stroke-width="1.5"/>
-        <line x1="0" y1="62%" x2="100%" y2="62%" stroke="#dedad2" stroke-width="1.5"/>
-        <line x1="0" y1="87%" x2="100%" y2="87%" stroke="#dedad2" stroke-width="1.5"/>
-        <line x1="8.5%" y1="0" x2="8.5%" y2="100%" stroke="#dedad2" stroke-width="1.5"/>
-        <line x1="30%" y1="0" x2="30%" y2="100%" stroke="#dedad2" stroke-width="1.5"/>
-        <line x1="55%" y1="0" x2="55%" y2="100%" stroke="#dedad2" stroke-width="1.5"/>
-        <line x1="78%" y1="0" x2="78%" y2="100%" stroke="#dedad2" stroke-width="1.5"/>
-      </svg>
-
-      <!-- "X events on map" pill -->
-      <div class="map-count-pill"><span id="map-pin-count">17</span> events on map</div>
-      <!-- Zoom controls -->
-      <div class="map-zoom-ctrl"><button>+</button><button>−</button></div>
-
-      <!-- ── Map pins (top: distance from top of canvas, left: distance from left) ── -->
-      <!-- Row 0 (y≈4%) -->
-      <div class="map-pin" style="left:9%;top:4%;" data-driver="Tom Williams" data-eventtype="Harsh Braking" data-vehicle="TRK-1209" data-severity="critical">
-        <div class="pin-head" style="background:#f23e44;">⚠️</div>
-        <div class="pin-stem"></div>
-        <div class="pin-label"><div class="pin-label-top">TRK-1209 · <span class="pin-label-sev critical">Critical</span></div><div class="pin-label-driver">Tom Williams</div></div>
-      </div>
-      <div class="map-pin" style="left:30%;top:5%;" data-driver="Marcus Johnson" data-eventtype="Phone Use" data-vehicle="TRK-4521" data-severity="critical">
-        <div class="pin-head" style="background:#f23e44;">📱</div>
-        <div class="pin-stem"></div>
-        <div class="pin-label"><div class="pin-label-top">TRK-4521 · <span class="pin-label-sev critical">Critical</span></div><div class="pin-label-driver">Marcus Johnson</div></div>
-      </div>
-      <div class="map-pin" style="left:55%;top:4%;" data-driver="Mike O'Brien" data-eventtype="Harsh Acceleration" data-vehicle="TRK-3344" data-severity="high">
-        <div class="pin-head" style="background:#ffb300;">⚡</div>
-        <div class="pin-stem"></div>
-        <div class="pin-label"><div class="pin-label-top">TRK-3344 · <span class="pin-label-sev high">High</span></div><div class="pin-label-driver">Mike O'Brien</div></div>
-      </div>
-      <div class="map-pin" style="left:78%;top:5%;" data-driver="Tom Williams" data-eventtype="Coasting" data-vehicle="TRK-1209" data-severity="high">
-        <div class="pin-head" style="background:#ffb300;">➡️</div>
-        <div class="pin-stem"></div>
-        <div class="pin-label"><div class="pin-label-top">TRK-1209 · <span class="pin-label-sev high">High</span></div><div class="pin-label-driver">Tom Williams</div></div>
-      </div>
-
-      <!-- Row 1 (y≈29%) -->
-      <div class="map-pin" style="left:9%;top:29%;" data-driver="Vasili Koltest" data-eventtype="Excessive Idling" data-vehicle="TRK-2287" data-severity="high">
-        <div class="pin-head" style="background:#ffb300;">⏱️</div>
-        <div class="pin-stem"></div>
-        <div class="pin-label"><div class="pin-label-top">TRK-2287 · <span class="pin-label-sev high">High</span></div><div class="pin-label-driver">Vasili Koltest</div></div>
-      </div>
-      <div class="map-pin" style="left:30%;top:30%;" data-driver="Marcus Johnson" data-eventtype="Harsh Braking" data-vehicle="TRK-4521" data-severity="high">
-        <div class="pin-head" style="background:#ffb300;">⚠️</div>
-        <div class="pin-stem"></div>
-        <div class="pin-label"><div class="pin-label-top">TRK-4521 · <span class="pin-label-sev high">High</span></div><div class="pin-label-driver">Marcus Johnson</div></div>
-      </div>
-      <div class="map-pin" style="left:55%;top:29%;" data-driver="Jake Foster" data-eventtype="Phone Use" data-vehicle="TRK-7833" data-severity="low">
-        <div class="pin-head" style="background:#4a8fcc;">📱</div>
-        <div class="pin-stem"></div>
-        <div class="pin-label"><div class="pin-label-top">TRK-7833 · <span class="pin-label-sev low">Low</span></div><div class="pin-label-driver">Jake Foster</div></div>
-      </div>
-      <div class="map-pin" style="left:78%;top:30%;" data-driver="Vasili Koltest" data-eventtype="Harsh Braking" data-vehicle="TRK-2287" data-severity="medium">
-        <div class="pin-head" style="background:#f0c020;">⚠️</div>
-        <div class="pin-stem"></div>
-        <div class="pin-label"><div class="pin-label-top">TRK-2287 · <span class="pin-label-sev medium">Medium</span></div><div class="pin-label-driver">Vasili Koltest</div></div>
-      </div>
-
-      <!-- Row 2 (y≈53%) -->
-      <div class="map-pin" style="left:9%;top:53%;" data-driver="Jake Foster" data-eventtype="Harsh Braking" data-vehicle="TRK-7833" data-severity="medium">
-        <div class="pin-head" style="background:#f0c020;">⚠️</div>
-        <div class="pin-stem"></div>
-        <div class="pin-label"><div class="pin-label-top">TRK-7833 · <span class="pin-label-sev medium">Medium</span></div><div class="pin-label-driver">Jake Foster</div></div>
-      </div>
-      <div class="map-pin" style="left:30%;top:54%;" data-driver="Marcus Johnson" data-eventtype="Excessive Idling" data-vehicle="TRK-4521" data-severity="medium">
-        <div class="pin-head" style="background:#f0c020;">⏱️</div>
-        <div class="pin-stem"></div>
-        <div class="pin-label"><div class="pin-label-top">TRK-4521 · <span class="pin-label-sev medium">Medium</span></div><div class="pin-label-driver">Marcus Johnson</div></div>
-      </div>
-      <div class="map-pin" style="left:55%;top:53%;" data-driver="Mike O'Brien" data-eventtype="Phone Use" data-vehicle="TRK-3344" data-severity="high">
-        <div class="pin-head" style="background:#ffb300;">📱</div>
-        <div class="pin-stem"></div>
-        <div class="pin-label"><div class="pin-label-top">TRK-3344 · <span class="pin-label-sev high">High</span></div><div class="pin-label-driver">Mike O'Brien</div></div>
-      </div>
-      <div class="map-pin" style="left:78%;top:54%;" data-driver="Vasili Koltest" data-eventtype="Excessive Idling" data-vehicle="TRK-2287" data-severity="high">
-        <div class="pin-head" style="background:#ffb300;">⏱️</div>
-        <div class="pin-stem"></div>
-        <div class="pin-label"><div class="pin-label-top">TRK-2287 · <span class="pin-label-sev high">High</span></div><div class="pin-label-driver">Vasili Koltest</div></div>
-      </div>
-      <div class="map-pin" style="left:93%;top:53%;" data-driver="Marcus Johnson" data-eventtype="Harsh Braking" data-vehicle="TRK-4521" data-severity="high">
-        <div class="pin-head" style="background:#ffb300;">⚠️</div>
-        <div class="pin-stem"></div>
-        <div class="pin-label"><div class="pin-label-top">TRK-4521 · <span class="pin-label-sev high">High</span></div><div class="pin-label-driver">Marcus Johnson</div></div>
-      </div>
-
-      <!-- Row 3 (y≈78%) -->
-      <div class="map-pin" style="left:9%;top:78%;" data-driver="Tom Williams" data-eventtype="Harsh cornering" data-vehicle="TRK-1209" data-severity="medium">
-        <div class="pin-head" style="background:#f0c020;">🔄</div>
-        <div class="pin-stem"></div>
-        <div class="pin-label"><div class="pin-label-top">TRK-1209 · <span class="pin-label-sev medium">Medium</span></div><div class="pin-label-driver">Tom Williams</div></div>
-      </div>
-      <div class="map-pin" style="left:30%;top:79%;" data-driver="Vasili Koltest" data-eventtype="Excessive Idling" data-vehicle="TRK-2287" data-severity="low">
-        <div class="pin-head" style="background:#4a8fcc;">⏱️</div>
-        <div class="pin-stem"></div>
-        <div class="pin-label"><div class="pin-label-top">TRK-2287 · <span class="pin-label-sev low">Low</span></div><div class="pin-label-driver">Vasili Koltest</div></div>
-      </div>
-      <div class="map-pin" style="left:55%;top:78%;" data-driver="Jake Foster" data-eventtype="Harsh Braking" data-vehicle="TRK-7833" data-severity="low">
-        <div class="pin-head" style="background:#4a8fcc;">⚠️</div>
-        <div class="pin-stem"></div>
-        <div class="pin-label"><div class="pin-label-top">TRK-7833 · <span class="pin-label-sev low">Low</span></div><div class="pin-label-driver">Jake Foster</div></div>
-      </div>
-      <div class="map-pin" style="left:78%;top:79%;" data-driver="Marcus Johnson" data-eventtype="Coasting" data-vehicle="TRK-4521" data-severity="low">
-        <div class="pin-head" style="background:#4a8fcc;">➡️</div>
-        <div class="pin-stem"></div>
-        <div class="pin-label"><div class="pin-label-top">TRK-4521 · <span class="pin-label-sev low">Low</span></div><div class="pin-label-driver">Marcus Johnson</div></div>
-      </div>
-
+      <div id="leaflet-map" style="width:100%;height:100%;"></div>
+      <div class="map-count-pill" style="z-index:1000;"><span id="map-pin-count">17</span> events on map</div>
     </div><!-- /map-canvas -->
 
   </div><!-- /map-view -->
@@ -1852,6 +1706,62 @@
     updateFilterStyles();
   }
 
+  // ── Leaflet map ──────────────────────────────────────────────────
+  var leafletMap = null;
+  var leafletMarkers = [];
+  var SEV_COLORS = { critical:'#f23e44', high:'#ffb300', medium:'#f0c020', low:'#4a8fcc' };
+
+  var MAP_EVENTS = [
+    { lat:52.10, lng:20.60, driver:'Tom Williams',   eventtype:'Harsh Braking',     vehicle:'TRK-1209', severity:'critical', label:'A2/E30, near Warsaw PL' },
+    { lat:49.80, lng:17.50, driver:'Marcus Johnson', eventtype:'Phone Use',          vehicle:'TRK-4521', severity:'critical', label:'E65, near Brno CZ' },
+    { lat:51.77, lng:19.46, driver:'Vasili Koltest', eventtype:'Excessive Idling',   vehicle:'TRK-2287', severity:'high',     label:'A1, Łódź Depot PL' },
+    { lat:48.72, lng:21.26, driver:'Vasili Koltest', eventtype:'Harsh Braking',      vehicle:'TRK-2287', severity:'medium',   label:'E50, near Košice SK' },
+    { lat:46.92, lng:17.90, driver:'Tom Williams',   eventtype:'Coasting',           vehicle:'TRK-1209', severity:'high',     label:'M7/E71, Lake Balaton HU' },
+    { lat:47.52, lng:19.10, driver:"Mike O'Brien",   eventtype:'Harsh Acceleration', vehicle:'TRK-3344', severity:'high',     label:'E75, near Budapest HU' },
+    { lat:47.35, lng:19.25, driver:'Marcus Johnson', eventtype:'Excessive Idling',   vehicle:'TRK-4521', severity:'medium',   label:'Budapest Depot HU' },
+    { lat:50.35, lng:30.60, driver:'Jake Foster',    eventtype:'Phone Use',          vehicle:'TRK-7833', severity:'low',      label:'E85, near Kyiv UA' },
+    { lat:50.65, lng:30.40, driver:'Jake Foster',    eventtype:'Harsh Braking',      vehicle:'TRK-7833', severity:'medium',   label:'E95, Kyiv ring UA' },
+    { lat:49.84, lng:24.03, driver:'Vasili Koltest', eventtype:'Excessive Idling',   vehicle:'TRK-2287', severity:'high',     label:'Lviv Warehouse UA' },
+    { lat:45.25, lng:19.85, driver:"Mike O'Brien",   eventtype:'Phone Use',          vehicle:'TRK-3344', severity:'high',     label:'E75, near Novi Sad RS' },
+    { lat:42.15, lng:24.75, driver:'Marcus Johnson', eventtype:'Harsh Braking',      vehicle:'TRK-4521', severity:'high',     label:'A1/E80, near Plovdiv BG' },
+    { lat:50.06, lng:19.94, driver:'Vasili Koltest', eventtype:'Excessive Idling',   vehicle:'TRK-2287', severity:'high',     label:'Kraków Loading Bay PL' },
+    { lat:51.10, lng:17.03, driver:'Tom Williams',   eventtype:'Harsh cornering',    vehicle:'TRK-1209', severity:'medium',   label:'E67, near Wrocław PL' },
+    { lat:44.50, lng:26.20, driver:'Jake Foster',    eventtype:'Harsh Braking',      vehicle:'TRK-7833', severity:'low',      label:'E70, near Bucharest RO' },
+    { lat:47.00, lng:28.85, driver:'Vasili Koltest', eventtype:'Excessive Idling',   vehicle:'TRK-2287', severity:'medium',   label:'Fuel stop, Chișinău MD' },
+    { lat:42.70, lng:23.32, driver:'Marcus Johnson', eventtype:'Coasting',           vehicle:'TRK-4521', severity:'low',      label:'A1/E80, near Sofia BG' },
+  ];
+
+  function initLeafletMap() {
+    if (leafletMap) { leafletMap.invalidateSize(); return; }
+    leafletMap = L.map('leaflet-map');
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+      attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+    }).addTo(leafletMap);
+    var bounds = [];
+    MAP_EVENTS.forEach(function(ev) {
+      var color  = SEV_COLORS[ev.severity] || '#888';
+      var marker = L.circleMarker([ev.lat, ev.lng], {
+        radius: 10, fillColor: color, color: '#fff', weight: 2, fillOpacity: 1
+      }).addTo(leafletMap);
+      marker.bindPopup(
+        '<div style="font-size:13px;min-width:150px;">' +
+        '<div style="font-weight:700;margin-bottom:4px;">' + ev.eventtype + '</div>' +
+        '<div style="color:#797f82;margin-bottom:2px;">' + ev.driver + ' &middot; ' + ev.vehicle + '</div>' +
+        '<div style="color:#797f82;">' + ev.label + '</div>' +
+        '</div>'
+      );
+      bounds.push([ev.lat, ev.lng]);
+      leafletMarkers.push({
+        marker:    marker,
+        driver:    ev.driver.toLowerCase(),
+        eventtype: ev.eventtype.toLowerCase(),
+        vehicle:   ev.vehicle.toLowerCase(),
+        severity:  ev.severity
+      });
+    });
+    if (bounds.length) leafletMap.fitBounds(bounds, { padding: [40, 40], maxZoom: 8 });
+  }
+
   // ── View toggle ─────────────────────────────────────────────────
   function setView(v) {
     var boardBtn = document.getElementById('btn-board');
@@ -1863,6 +1773,7 @@
       mapBtn.classList.add('active');
       kanban.style.display  = 'none';
       mapView.classList.add('visible');
+      setTimeout(initLeafletMap, 0);
     } else {
       boardBtn.classList.add('active');
       mapBtn.classList.remove('active');
@@ -1913,12 +1824,20 @@
     var mapEventCount = document.getElementById('map-event-count');
     if (mapEventCount) mapEventCount.textContent = mapVisible;
 
-    // Map pins
+    // Leaflet markers
     var pinVisible = 0;
-    document.querySelectorAll('.map-pin').forEach(function(pin) {
-      var show = matchesFilters(pin, eventType, vehicle, driver, severity);
-      pin.style.display = show ? '' : 'none';
-      if (show) pinVisible++;
+    leafletMarkers.forEach(function(item) {
+      var show = true;
+      if (eventType && item.eventtype !== eventType) show = false;
+      if (vehicle   && item.vehicle   !== vehicle)   show = false;
+      if (driver    && item.driver    !== driver)     show = false;
+      if (severity  && item.severity  !== severity)   show = false;
+      if (show) {
+        if (leafletMap && !leafletMap.hasLayer(item.marker)) item.marker.addTo(leafletMap);
+        pinVisible++;
+      } else {
+        if (leafletMap && leafletMap.hasLayer(item.marker)) leafletMap.removeLayer(item.marker);
+      }
     });
     var pinCount = document.getElementById('map-pin-count');
     if (pinCount) pinCount.textContent = pinVisible;
